@@ -1,4 +1,7 @@
-
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyBCSDtf8g7XZ9B-P20ZqzOIr1TUQAg4Fj0&sensor=false&libraries=drawing,places,geometry"></script>
+    <div *ngIf="districts$ | async as talukas">
+            {{talukas | json}}
+    </div>
     <div class="dash_outer">
         <div class="container-fluid">
             <div class="row">
@@ -197,11 +200,11 @@
                                                  </div>
                                                  <div class="col-lg-7  px-md-0">
                                                     <div class="custom-control custom-radio custom-control-inline ">
-                                                        <input class="custom-control-input" type="radio" data-entry="category" name="qCategory" id="qCategory1" value="0" checked/>
+                                                        <input class="custom-control-input" type="radio" data-entry="category" name="qCategory" id="qCategory1" [value]="0" [(ngModel)]="category" (change)="surveyCategory=category " />
                                                         <label class="custom-control-label" for="qCategory1">Rural</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline ">
-                                                        <input class="custom-control-input" type="radio" data-entry="category" name="qCategory" id="qCategory2" value="1" />
+                                                        <input class="custom-control-input" type="radio" data-entry="category" name="qCategory" id="qCategory2" [value]="1" [(ngModel)]="category" (change)="surveyCategory=category "/>
                                                         <label class="custom-control-label" for="qCategory2">Urban</label>
                                                     </div>
                                                  </div>
@@ -214,8 +217,9 @@
                                                 </div>
                                                  <div class="col-lg-7">
                                                     <div class="form-group">
-                                                        <select class="form-control " data-reuired="1" data-entry="district">
-                                                                <option selected locationid="0">Select District</option>
+                                                        <select [disabled]="true" class="form-control" data-required="1" data-entry="district" [ngModel]="district" (ngModelChange)="onDistrictChange($event)">
+                                                                <option value="undefined" disabled>Select District</option>
+                                                                <option *ngFor="let district of districts" [value]="district.id">{{district.district}}</option>
                                                         </select>
                                                     </div>
                                                  </div>
@@ -228,27 +232,45 @@
                                                 </div>
                                                  <div class="col-lg-7">
                                                     <div class="form-group">
-                                                        <select class="form-control " data-reuired="1" data-entry="taluka">
-                                                                <option selected locationid="0">Select Taluka/CTSO</option>
+                                                        <select [disabled]="talukas?.length <= 1" class="form-control " data-required="1" data-entry="taluka" [(ngModel)]="taluka" (ngModelChange)="onTalukaChange($event)">
+                                                                <option value="undefined" disabled selected>Select Taluka/CTSO</option>
+                                                                <option *ngFor="let taluka of talukas" [value]="taluka.id">{{taluka.taluka}}</option>
                                                         </select>
                                                     </div>
                                                  </div>
                                             </div>
                                         </div>
-                                         <div class="col-lg-3">
+                                         <div class="col-lg-3" *ngIf="category === 0">
                                              <div class="row">
                                                 <div class="col-lg-5">
                                                     <h6 class="input_head requiredlabel"><span data-village-city="VillageCity">Village:</span> <span class="fa fa-asterisk"></span></h6>
                                                 </div>
                                                 <div class="col-lg-7">
                                                     <div class="form-group">
-                                                        <select class="form-control " data-reuired="1" data-entry="censusId">
-                                                                <option selected locationid="0">Select Village</option>
+                                                        <select [disabled]="!taluka || villages?.length <= 1" class="form-control " data-required="1" data-entry="censusId" [(ngModel)]="village" (ngModelChange)="surveyVillage = village">
+                                                                <option value="undefined" disabled selected>Select Village</option>
+                                                                <option *ngFor="let village of villages" [value]="village.id">{{village.name}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="col-lg-3" *ngIf="category === 1">
+                                            <div class="row">
+                                               <div class="col-lg-5">
+                                                   <h6 class="input_head requiredlabel"><span data-village-city="VillageCity">City:</span> <span class="fa fa-asterisk"></span></h6>
+                                               </div>
+                                               <div class="col-lg-7">
+                                                   <div class="form-group">
+                                                       <select [disabled]="!taluka || cities?.length <= 1" class="form-control " data-required="1" data-entry="censusId" [(ngModel)]="city" (ngModelChange)="surveyCity = city">
+                                                               <option value="undefined" disabled selected>Select City</option>
+                                                               <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
+                                                       </select>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
                                     </div>
                                  </div>
                              </div>
@@ -276,10 +298,10 @@
                                                         </div>
                                                          <div class="col-lg-7">
                                                             <div class="form-group">
-                                                                <select class="form-control " data-reuired="1" data-entry="location">
-                                                                    <option selected locationid="0">Select Location</option>
-                                                                      <option  locationid="leftbank">Left Bank</option>
-                                                                      <option locationid="rightbank">Right Bank</option>
+                                                                <select class="form-control " data-reuired="1" data-entry="location" [(ngModel)]="surveyLocation">
+                                                                     <option value="undefined" selected disabled>Select Location</option>
+                                                                      <option value="leftbank" locationid="leftbank">Left Bank</option>
+                                                                      <option value="rightbank" locationid="rightbank">Right Bank</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -292,12 +314,12 @@
                                                         </div>
                                                          <div class="col-lg-7">
                                                             <div class="custom-control custom-radio custom-control-inline ">
-                                                              <input class="custom-control-input" type="radio" data-entry="Scategory" name="Category" id="Category1" value="0" checked>
-                                                              <label class="custom-control-label" for="Category1">Rural</label>
+                                                                <input class="custom-control-input" type="radio" data-entry="Scategory" name="Category" id="Category1" [value]="0" [(ngModel)]="surveyCategory"/>
+                                                                <label class="custom-control-label" for="Category1">Rural</label>
                                                             </div>
                                                             <div class="custom-control custom-radio custom-control-inline ">
-                                                              <input class="custom-control-input" type="radio" data-entry="Scategory" name="Category" id="Category2" value="1" >
-                                                              <label class="custom-control-label" for="Category2">Urban</label>
+                                                                <input class="custom-control-input" type="radio" data-entry="Scategory" name="Category" id="Category2" [value]="1" [(ngModel)]="surveyCategory"/>
+                                                                <label class="custom-control-label" for="Category2">Urban</label>
                                                             </div>
                                                         </div>
                                                      </div>
@@ -309,9 +331,10 @@
                                                         </div>
                                                          <div class="col-lg-7">
                                                             <div class="form-group">
-                                                                <select class="form-control " data-reuired="1" data-entry="Sdistrict">
-                                                                      <option selected locationid="0">Select District</option>
-                                                                </select>
+                                                                <select [disabled]="true" class="form-control" data-required="1" data-entry="district" [ngModel]="surveyDistrict" (ngModelChange)="onSurveyDistrictChange($event)">
+                                                                    <option value="undefined" disabled>Select District</option>
+                                                                    <option *ngFor="let district of districts" [value]="district.id">{{district.district}}</option>
+                                                            </select>
                                                             </div>
                                                         </div>
                                                      </div>
@@ -330,23 +353,40 @@
                                                         </div>
                                                          <div class="col-lg-7">
                                                             <div class="form-group">
-                                                                <select class="form-control " data-reuired="1" data-entry="Staluka" >
-                                                                      <option selected locationid="0">Select Taluka/CTSO</option>
-                                                                </select>
+                                                                <select [disabled]="talukas?.length <= 1" class="form-control " data-required="1" data-entry="Staluka" [(ngModel)]="surveyTaluka" (ngModelChange)="onSurveyTalukaChange($event)">
+                                                                    <option value="undefined" disabled selected>Select Taluka/CTSO</option>
+                                                                    <option *ngFor="let taluka of surveyTalukas" [value]="taluka.id">{{taluka.taluka}}</option>
+                                                            </select>
                                                             </div>
                                                         </div>
                                                      </div>
                                                 </div>
-                                                 <div class="col-md-4">
+                                                 <div class="col-md-4" *ngIf="surveyCategory === 0">
                                                     <div class="row">
                                                         <div class="col-lg-5">
                                                             <h6 class="input_head requiredlabel" id="_isVillage-city">Village:<span class="fa fa-asterisk"></span></h6>
                                                         </div>
                                                          <div class="col-lg-7">
                                                             <div class="form-group">
-                                                                <select class="form-control " data-reuired="1" data-entry="ScensusId" id="">
-                                                                      <option selected locationid="0">Select Village</option>
-                                                                </select>
+                                                                <select [disabled]="!surveyTaluka || surveyVillages?.length <= 1" class="form-control " data-required="1" data-entry="ScensusId" [(ngModel)]="surveyVillage">
+                                                                    <option value="undefined" disabled selected>Select Village</option>
+                                                                    <option *ngFor="let village of surveyVillages" [value]="village.id">{{village.name}}</option>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                                <div class="col-md-4" *ngIf="surveyCategory === 1">
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            <h6 class="input_head requiredlabel" id="_isVillage-city">City:<span class="fa fa-asterisk"></span></h6>
+                                                        </div>
+                                                         <div class="col-lg-7">
+                                                            <div class="form-group">
+                                                                <select [disabled]="!surveyTaluka || surveyCities?.length <= 1" class="form-control " data-required="1" data-entry="ScensusId" [(ngModel)]="surveyCity">
+                                                                    <option value="undefined" disabled selected>Select City</option>
+                                                                    <option *ngFor="let city of surveyCities" [value]="city.id">{{city.name}}</option>
+                                                            </select>
                                                             </div>
                                                         </div>
                                                      </div>
@@ -358,7 +398,7 @@
                                                     </div>
                                                     <div class="col-lg-7">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control " data-reuired="1" data-entry="surveyNo"  placeholder="Enter Survey Number">
+                                                            <input type="text" class="form-control" data-required="1" data-entry="surveyNo"  placeholder="Enter Survey Number" [(ngModel)]="surveyNumber">
                                                         </div>
                                                     </div>
                                                  </div>
@@ -366,8 +406,9 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-1  register_btn text-center p-0">
-                                        <button class="btn btn-info mb-0" data-btn="Add-survey-No" id="btnAddSurvey">Add</button>
-                                                <button  class="btn btn-info mb-0 hide"  id="btnClearSurvey">Clear</button>
+                                        <button type="button" *ngIf="!surveyEditMode" class="btn btn-info mb-0" data-btn="Add-survey-No" id="btnAddSurvey" (click)="addOrUpdateSurvey()">Add</button>
+                                            <button type="button" *ngIf="surveyEditMode" class="btn btn-info mb-0" data-btn="Add-survey-No" id="btnAddSurvey" (click)="addOrUpdateSurvey()">Update</button>
+                                                <button  type="button" *ngIf="surveyEditMode" class="btn btn-info mb-0"  id="btnClearSurvey" (click)="clearSurvey()">Clear</button>
 
                                     </div>
                               </div>
@@ -392,6 +433,15 @@
                                     </tr>
                                     </thead>
                                     <tbody data-table="Survey_number">
+                                        <tr *ngFor="let surveyDetail of surveyDetails; let i=index">
+                                            <td scope="col">{{i+1}}</td>
+                                            <td scope="col">{{surveyDetail.surveyLocationLabel}}</td>
+                                            <td scope="col">{{surveyDetail.surveyDistrictLabel}}</td>
+                                            <td scope="col">{{surveyDetail.surveyTalukaLabel}}</td>
+                                            <td scope="col">{{surveyDetail.surveyVillageCityLabel}}</td>
+                                            <td scope="col">{{surveyDetail.surveyNumber}}</td>
+                                            <td scope="col"><span (click)="editSurveyDetail(i)">Edit</span><span (click)="deleteSurveyDetail(i)">Delete</span></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -485,7 +535,7 @@
                                             </div>
                                             <div class="col-md-5 pr-md-1">
                                                 <div class="input-group ">
-                                                    <input type="text" class="form-control disabled " id="Latlng"  placeholder="Log/Latitude" />
+                                                    <input type="text"  class="form-control disabled " id="Latlng"  placeholder="Log/Latitude" value="{{getLatLong()}}" />
                                                 </div>
                                             </div>
                                             <div class="col-md-2 pl-md-1">
@@ -521,111 +571,132 @@
                                             </div>
                                         </div>
                                   
+                                              <!-- Modal -->
+                                              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Photo Gallery</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" id="galleryModal">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                                               
+                                                                            </div>
+                                                                            <div class="upload-photo  mb-4">
+                                                                                     <input id="fileInput" type="file" multiple="multiple" style="display: none;" accept="image/*" />
+                                                                                    <button type="button" onclick="document.getElementById('fileInput').click();" class="btn btn-info">Upload Photo</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                                
+                                                            <div class="row Filter_tableContent">
+                                                                <div class="col-md-12 px-md-1">
+                                                                    <div class="dash_filter">
+                                                                        
+                                                                        <div class="filter-form">
+                                                                            <div class="row ">
+                                                                                <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
+                                                                                    <select class="form-control district" >
+                                                                                        <option locationid="0"> Select District </option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
+                                                                                     <select class="form-control plotlocation ">
+                                                                                          <option selected locationid="">All Plot Location </option>
+                                                                                                      <option  locationid="river">River</option>
+                                                                                                      <option locationid="costal">Costal</option>
+                                                                                                      <option locationid="interior">Interior</option>
+                                                                                                      <option locationid="dam">Dam / Lake</option>
+                                                                                                </select>
+                                                                                </div>
+                                                                                <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
+                                                                                    <select class="form-control ownership">
+                                                                                         <option selected locationid="">All Plot Ownership </option>
+                                                                                         <option  locationid="government">Government</option>
+                                                                                         <option locationid="private">Private</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
+                                                                                     <input type="text" class="form-control TextSearch " placeholder="Search"/>
+                                                                                </div>
+                                                                                <div class="col-lg-2 col-sm-6 col-12 px-sm-1 px-0 my-1 my-lg-0 filter_btn text-sm-right text-center">
+                                                                                    <button type="button" class="btn btn-outline-dark mb-0" data-btn="Apply"><i class="fa fa-search"></i> Apply</button>
+                                                                                    <button type="button" class="btn btn-filter mb-0" data-btn="filter"><i class="fa fa-filter"></i></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                   
+                                                                </div>
+                                                                     <div class="dash_table mb-0" data-table="quarryTable">
+                                                                        <table class="table table-responsive-sm">
+                                                                            <thead class="thead-dark">
+                                                                            <tr>
+                                                                                <th scope="col">SR.NO</th>
+                                                                                <th scope="col">DISTRICT</th>
+                                                                                <th scope="col">PLOT LOCATION</th>
+                                                                                <th scope="col">PLOT OWNERSHIP</th>
+                                                                                <th scope="col">QUARRY NAME</th>
+                                                                                <th scope="col">AREA(HECTARES)</th>
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody data-table="quarryTable">
+                                                                                <tr *ngFor="let quarryRegister of quarryRegisters; let i=index">
+                                                                                    <td scope="col">{{i+1}}</td>
+                                                                                    <td scope="col">{{quarryRegister.district}}</td>
+                                                                                    <td scope="col">{{quarryRegister.riverCostal}}</td>
+                                                                                    <td scope="col">{{quarryRegister.ownerShip}}</td>
+                                                                                    <td scope="col">{{quarryRegister.name}}</td>
+                                                                                    <td scope="col">{{quarryRegister.area}}</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                            </div>   
+                                                        </div>
+                                                    </div>
+                                                    <div id="tblPagination"></div>
+                                                    <div class="dash_footer">
+                                                        <p>Copyright © 2020 Mahamining All rights Reserved.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          </div>
+                                           <input type="hidden" data-toggle="modal" data-target="#submitModal"/>
                                            <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Photo Gallery</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="galleryModal">
-                </div>
-            </div>
-        </div>
-    </div>
-                                       
-                                    </div>
-                                    <div class="upload-photo  mb-4">
-                                             <input id="fileInput" type="file" multiple="multiple" style="display: none;" accept="image/*" />
-                                            <button type="button" onclick="document.getElementById('fileInput').click();" class="btn btn-info">Upload Photo</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                        
-                    <!-- <div class="row Filter_tableContent">
-                        <div class="col-md-12 px-md-1">
-                            <div class="dash_filter">
-                                
-                                <div class="filter-form">
-                                    <div class="row ">
-                                        <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
-                                            <select class="form-control district" >
-                                                <option locationid="0"> Select District </option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
-                                             <select class="form-control plotlocation ">
-                                                  <option selected locationid="">All Plot Location </option>
-                                                              <option  locationid="river">River</option>
-                                                              <option locationid="costal">Costal</option>
-                                                              <option locationid="interior">Interior</option>
-                                                              <option locationid="dam">Dam / Lake</option>
-                                                        </select>
-                                        </div>
-                                        <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
-                                            <select class="form-control ownership">
-                                                 <option selected locationid="">All Plot Ownership </option>
-                                                 <option  locationid="government">Government</option>
-                                                 <option locationid="private">Private</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
-                                             <input type="text" class="form-control TextSearch " placeholder="Search"/>
-                                        </div>
-                                        <div class="col-lg-2 col-sm-6 col-12 px-sm-1 px-0 my-1 my-lg-0 filter_btn text-sm-right text-center">
-                                            <button type="button" class="btn btn-outline-dark mb-0" data-btn="Apply"><i class="fa fa-search"></i> Apply</button>
-                                            <button type="button" class="btn btn-filter mb-0" data-btn="filter"><i class="fa fa-filter"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                           
-                        </div>
-                             <div class="dash_table mb-0" data-table="quarryTable">
-                       
-                            </div>
-                    </div>   
-                </div>
-            </div>
-            <div id="tblPagination"></div>
-            <div class="dash_footer">
-                <p>Copyright © 2020 Mahamining All rights Reserved.</p>
-            </div>
-        </div>
-    </div>
-  </div>
-   <input type="hidden" data-toggle="modal" data-target="#submitModal"/>
-   <!-- Modal -->
-    <!-- <div class="modal fade submit-modal" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog  modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="top-close">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="model-check">
-                        <i class="fa fa-check"></i>
-                    </div>
-                    <h3 id="Smessage"></h3>
-                    <h6 class="text-danger d-none " id="GeofenceMessage"></h6>
-                    <div class="text-center">
-                        <button type="button" id="quarryOk" class="btn btn-info mb-0" data-dismiss="modal">Ok</button>
-                          <button type="button" id="GeofenceYes" class="btn btn-info mb-0 d-none isgeofenceExist " data-dismiss="modal">Yes</button>
-                          <button type="button" id="GeofenceNo" class="btn btn-danger mb-0 d-none isgeofenceExist " data-dismiss="modal">NO</button>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-
- -->
+                                            <div class="modal fade submit-modal" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog  modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <div class="top-close">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="model-check">
+                                                                <i class="fa fa-check"></i>
+                                                            </div>
+                                                            <h3 id="Smessage"></h3>
+                                                            <h6 class="text-danger d-none " id="GeofenceMessage"></h6>
+                                                            <div class="text-center">
+                                                                <button type="button" id="quarryOk" class="btn btn-info mb-0" data-dismiss="modal">Ok</button>
+                                                                  <button type="button" id="GeofenceYes" class="btn btn-info mb-0 d-none isgeofenceExist " data-dismiss="modal">Yes</button>
+                                                                  <button type="button" id="GeofenceNo" class="btn btn-danger mb-0 d-none isgeofenceExist " data-dismiss="modal">NO</button>
+                                        
+                                                            </div>
+                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                        
+                                        
+                                         

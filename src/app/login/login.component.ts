@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     } else if (emailExist[0].password === data.password) {
       console.log('login success');
       this.service.setLogIn(true);
-      this.router.navigate(['users']);
+      this.router.navigate(['quarry']);
     } else {
       this.emailNotExist = false;
       this.passwordWrong = true;
