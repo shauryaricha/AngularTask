@@ -1,0 +1,50 @@
+<div class="row m-3">
+    <div class="container col-md-12">
+        <h2 class="text-center">User details</h2>
+        <div class="text-center mr-2 mb-2">
+            <button class="btn btn-primary" routerLink="/add-user">Add User</button> |
+            <button class="btn btn-primary" (click)="logOut()">Logout</button>
+        </div>
+        <div *ngIf="details.length > 0;  else elseBlock">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-success">
+                    <thead class="nav-background">
+                        <tr class="table-primary">
+                            <th scope="col">SNo.</th>
+                            <th scope="col">FirstName</th>
+                            <th scope="col">LastName</th>
+                            <th scope="col">Mobile No.</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Dob.</th>
+                            <th scope="col">Quailification</th>
+                            <th scope="col">Actions</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let detail of details; index as i">
+                            <td>{{i+1}}</td>
+                            <td>{{detail.firstName}}</td>
+                            <td>{{detail.lastName}}</td>
+                            <td>{{detail.phone}}</td>
+                            <td>{{detail.email}}</td>
+                            <td>{{detail.date}}</td>
+                            <td>{{detail.qualification}}</td>
+                            <td>
+                                <div class="d-flex ">
+                                    <button type="button" class="btn btn-primary mr-2" (click)="onEditClick(detail)"><i class="fa fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger" (click)="delete(id)"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <ng-template #elseBlock>
+            <div class="text-success text-center nav-background">
+                <h1>No User Details</h1>
+            </div>
+        </ng-template>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <!-- <nav class="navbar navbar-light nav-background">
+        <form class="form-inline">
+            <button class="btn btn-outline-success my-2 my-sm-0 m-2" routerLink="/users">User Details</button>
+        </form>
+    </nav> -->
+    <button *ngIf="service.loginFlag" class="btn btn-outline-success my-2 my-sm-0 m-2" routerLink="/users">User Details</button>
+    <div class="mt-2">
+        <router-outlet></router-outlet>
+        <div>
+            <footer class="py-2 footer nav-background text-success">
+                <div class="container text-center">
+                    <small>Copyright &copy; 2015-2020 | All rights reserved.</small>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+</div>

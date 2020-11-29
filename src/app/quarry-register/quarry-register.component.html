@@ -1,0 +1,631 @@
+
+    <div class="dash_outer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-11 offset-md-1">
+                    <div class="dash_bread mt-5">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Dashboard > <span> &nbsp; Quarry register</span></h5>
+                            </div>
+                            <div class="col-md-6">
+                               <div class="top-btn-group text-sm-right text-center mb-2">
+                                    <button type="button" data-button="edit"  class="btn dept_submit disabled" ><i class="fa fa-pen"></i>Edit</button>
+                                    <button type="button" data-button="cancel" class="btn dept_submit disabled"><i class="fa fa-times"></i>Clear</button>
+                                    <button type="button" data-button="Saveupdate"  class="btn dept_submit disabled " ><i class="fa fa-sign-out-alt"></i>Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dash_content ">
+                        <div data-scope="edit" class="dataContent">
+                        <div class="row">
+                             <div class="col-md-11">
+                                 <div  class="dash_content__left " data-scope="edit">
+                                     <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <h6 class="input_head requiredlabel">Quarry Name: <span class="fa fa-asterisk"></span> </h6>
+                                                 </div>
+                                                 <div class="col-lg-7">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control " data-reuired="1" data-entry="name"  placeholder="Enter Quarry Name"/>
+                                                    </div>
+                                                 </div>
+                                             </div>
+                                        </div>
+                                         <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <h6 class="input_head requiredlabel">Plot Location: <span class="fa fa-asterisk"></span> </h6>
+                                                 </div>
+                                                 <div class="col-lg-7">
+                                                    <div class="form-group">
+                                                        <select class="form-control " data-reuired="1" data-entry="riverCostal" id="plotlocation">
+                                                                <option selected locationid="0">Select Plot Location</option>
+                                                                <option locationid="RIVER">River</option>
+                                                                <option locationid="COSTAL">Costal</option>
+                                                                <option locationid="INTERIOR">Interior</option>
+                                                                <option locationid="DAM">Dam / Lake</option>
+                                                              </select>
+                                                    </div>
+                                                 </div>
+                                             </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <h6 class="input_head requiredlabel ">River/Coast Name: </h6>
+                                                 </div>
+                                                 <div class="col-lg-7">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control " data-entry="riverName"  placeholder="River/Coast name">
+                                                    </div>
+                                                 </div>
+                                             </div>
+                                        </div>
+                                     </div>
+                                 </div>
+                             </div>
+                            <div class="col-md-1"></div>
+                         </div>
+                        <div class="row">
+                             <div class="col-md-11">
+                                 <div  class="dash_content__left">
+                                      <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <h6 class="input_head requiredlabel ">Plot Ownership: <span class="fa fa-asterisk"></span>  </h6>
+                                                </div>
+                                                 <div class="col-lg-7">
+                                                    <div class="form-group">
+                                                        <select class="form-control " data-reuired="1" data-entry="ownerShip"  id="plotownership">
+                                                            <option selected locationid="0">Select Plot Ownership</option>
+                                                              <option  locationid="GOVERNMENT">Government</option>
+                                                              <option locationid="PRIVATE">Private</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                        </div>
+                                         <div class="col-md-4 hide Government">
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <h6 class="input_head requiredlabel">Government :<span class="fa fa-asterisk"></span> </h6>
+                                                </div>
+                                                 <div class="col-lg-7">
+                                                    <div class="form-group">
+                                                        <select class="form-control " data-reuired="1" data-entry="govt" id="government">
+                                                            <option selected locationid="0">Select Government</option>
+                                                              <option  locationid="CENTRAL">Central</option>
+                                                              <option locationid="STATE">State</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                        </div>
+                                         <div class="col-md-4 hide Government">
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <h6 class="input_head requiredlabel">Department :<span class="fa fa-asterisk"></span></h6>
+                                                </div>
+                                                 <div class="col-lg-7">
+                                                    <div class="form-group">
+                                                        <select class="form-control " data-reuired="1" data-entry="departmentId" id="department">
+                                                              <option selected>Select Department</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                        </div>
+                                     </div>
+                                 </div>
+                             </div>
+                            <div class="col-lg-1  register_btn text-center p-0 hide Government">
+                                <button type="button" title="add Deaprtment"  class="btn btn-info mb-0 px-2 mt-2 " data-btn="Add-dapartment" id="Add" data-toggle="modal" data-target="#addDept"><i class="fa fa-plus" ></i></button>
+                                <label class="addUnitLabel mt-sm-2 mt-5">Add Department</label>
+                                <!-- Modal -->
+                                <div class="modal fade addDept_modal" id="addDept" tabindex="-1" role="dialog" aria-labelledby="addDept" aria-hidden="true">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Department Name</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body ">
+                                        <div class="addDept_main">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div data-scope="dEdit">
+                                                    <div class="custom-control custom-radio ">
+                                                        <input class="custom-control-input" type="radio" data-entry="Gcategory" name="sGovernment" id="sGovernment1" value="central" checked/>
+                                                        <label class="custom-control-label" for="sGovernment1">Central Government</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control-inline ">
+                                                        <input class="custom-control-input" type="radio" data-entry="Gcategory" name="sGovernment" id="sGovernment2" value="state" />
+                                                        <label class="custom-control-label" for="sGovernment2">State Government</label>
+                                                    </div>
+                                                    <div class="adddept1">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control " data-entry="Dname"  placeholder="Enter Department Name" />
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                      <div class="p-2">
+                                                        <button type="button" class="btn dept_submit" onclick="submitDepart()"><i class="fa fa-sign-out-alt"></i>Submit</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <h6><span id="addDprtNmLabel" class="font-weight-bold"></span> Government</h6>
+                                                    <table class="table table-bordered" data-table="department">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">Sr.No</th>
+                                                            <th scope="col">Name</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="dTable">
+                                                      
+                                                       <tr>
+                                                            <th scope="row">02</th>
+                                                            <td>Irrigation Department <button type="button" class="btn btn-outline-danger" onclick=""><i class="fa fa-trash" ></i></button></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                  
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                             <div class="col-md-12">
+                                 <div  class="dash_content__left">
+                                      <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <h6 class="input_head ">Category:</h6>
+                                                 </div>
+                                                 <div class="col-lg-7  px-md-0">
+                                                    <div class="custom-control custom-radio custom-control-inline ">
+                                                        <input class="custom-control-input" type="radio" data-entry="category" name="qCategory" id="qCategory1" value="0" checked/>
+                                                        <label class="custom-control-label" for="qCategory1">Rural</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control-inline ">
+                                                        <input class="custom-control-input" type="radio" data-entry="category" name="qCategory" id="qCategory2" value="1" />
+                                                        <label class="custom-control-label" for="qCategory2">Urban</label>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                     <h6 class="input_head requiredlabel">District: <span class="fa fa-asterisk"></span> </h6>
+                                                </div>
+                                                 <div class="col-lg-7">
+                                                    <div class="form-group">
+                                                        <select class="form-control " data-reuired="1" data-entry="district">
+                                                                <option selected locationid="0">Select District</option>
+                                                        </select>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <h6 class="input_head requiredlabel">Taluka/CTSO:<span class="fa fa-asterisk"></span></h6>
+                                                </div>
+                                                 <div class="col-lg-7">
+                                                    <div class="form-group">
+                                                        <select class="form-control " data-reuired="1" data-entry="taluka">
+                                                                <option selected locationid="0">Select Taluka/CTSO</option>
+                                                        </select>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                         <div class="col-lg-3">
+                                             <div class="row">
+                                                <div class="col-lg-5">
+                                                    <h6 class="input_head requiredlabel"><span data-village-city="VillageCity">Village:</span> <span class="fa fa-asterisk"></span></h6>
+                                                </div>
+                                                <div class="col-lg-7">
+                                                    <div class="form-group">
+                                                        <select class="form-control " data-reuired="1" data-entry="censusId">
+                                                                <option selected locationid="0">Select Village</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 </div>
+                             </div>
+                            
+                        </div>
+                            </div>
+                        
+                        <div class="row dataContent">
+                             <div class="col-md-12">
+                                 <div class="dash_content__left dash_filter2" data-scope="surveyNumber">
+                                     <div class="row">
+                                         <div class="col-md-12">
+                                             <div class="dash_filter2__head">
+                                                 <h5>ASSIGN SURVEY NUMBER</h5>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="row">
+                                       <div class="col-md-11">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            <h6 class="input_head requiredlabel">Location:<span class="fa fa-asterisk"></span> </h6>
+                                                        </div>
+                                                         <div class="col-lg-7">
+                                                            <div class="form-group">
+                                                                <select class="form-control " data-reuired="1" data-entry="location">
+                                                                    <option selected locationid="0">Select Location</option>
+                                                                      <option  locationid="leftbank">Left Bank</option>
+                                                                      <option locationid="rightbank">Right Bank</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                                 <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            <h6 class="input_head requiredlabel">Category:<span class="fa fa-asterisk"></span>  </h6>
+                                                        </div>
+                                                         <div class="col-lg-7">
+                                                            <div class="custom-control custom-radio custom-control-inline ">
+                                                              <input class="custom-control-input" type="radio" data-entry="Scategory" name="Category" id="Category1" value="0" checked>
+                                                              <label class="custom-control-label" for="Category1">Rural</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline ">
+                                                              <input class="custom-control-input" type="radio" data-entry="Scategory" name="Category" id="Category2" value="1" >
+                                                              <label class="custom-control-label" for="Category2">Urban</label>
+                                                            </div>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                                 <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            <h6 class="input_head  requiredlabel">District: <span class="fa fa-asterisk"></span> </h6>
+                                                        </div>
+                                                         <div class="col-lg-7">
+                                                            <div class="form-group">
+                                                                <select class="form-control " data-reuired="1" data-entry="Sdistrict">
+                                                                      <option selected locationid="0">Select District</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                             </div>
+                                           </div>
+                                           <div class="col-md-1"></div>
+                                         </div>
+                                     <div class="row">
+                                         <div class="col-md-11">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            <h6 class="input_head requiredlabel ">Taluka/CTSO:<span class="fa fa-asterisk"></span>  </h6>
+                                                        </div>
+                                                         <div class="col-lg-7">
+                                                            <div class="form-group">
+                                                                <select class="form-control " data-reuired="1" data-entry="Staluka" >
+                                                                      <option selected locationid="0">Select Taluka/CTSO</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                                 <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            <h6 class="input_head requiredlabel" id="_isVillage-city">Village:<span class="fa fa-asterisk"></span></h6>
+                                                        </div>
+                                                         <div class="col-lg-7">
+                                                            <div class="form-group">
+                                                                <select class="form-control " data-reuired="1" data-entry="ScensusId" id="">
+                                                                      <option selected locationid="0">Select Village</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                 <div class="row">
+                                                    <div class="col-lg-5">
+                                                        <h6 class="input_head requiredlabel">Survey Number:<span class="fa fa-asterisk"></span> </h6>
+                                                    </div>
+                                                    <div class="col-lg-7">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control " data-reuired="1" data-entry="surveyNo"  placeholder="Enter Survey Number">
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1  register_btn text-center p-0">
+                                        <button class="btn btn-info mb-0" data-btn="Add-survey-No" id="btnAddSurvey">Add</button>
+                                                <button  class="btn btn-info mb-0 hide"  id="btnClearSurvey">Clear</button>
+
+                                    </div>
+                              </div>
+                            </div>
+                         </div>
+                        
+                    </div>
+                    <div class="row dataContent">
+                        <div class="col-lg-6 pl-md-1 tbl_left_outer pb-100">
+                            <div class="dash_table tbl_left" >
+                                <table class="table table-responsive-sm">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Sr.No</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">District</th>
+                                        <th scope="col">Taluka/CTSO</th>
+                                        <th scope="col">Village</th>
+                                        <th scope="col">Survey Numbers</th>
+                                        <th scope="col">Edit|Delete</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody data-table="Survey_number">
+                                    </tbody>
+                                </table>
+                            </div>
+                         
+                            <div class="dash_content__left" data-scope="edit-area-remark">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-2 col-12">
+                                            <h6 class="input_head requiredlabel">Area:<span class="fa fa-asterisk"></span> </h6>
+                                        </div>
+                                        <div class="col-md-5 col-8 pr-0">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control validate-decimal-number" data-reuired="1"  data-entry="area" maxlength="5" length="5"  placeholder="Area" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-4 pl-0">
+                                            <h6 class="input_append ">(Hectare)</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2 col-12">
+                                            <h6 class="input_head ">Remark </h6>
+                                        </div>
+                                        <div class="col-md-5 col-8">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control " maxlength="150" length="150" data-entry="remark"  placeholder="Remark"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="col-md-8 pl-1">
+                                    <div  class="dash_content__right map pb-1">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                 <h6 class="input_head">Map</h6>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <ul class="nav nav-pills mb-3 justify-content-end map-menu" id="pills-tab" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link " id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true"><img src="images/ImportKMLfile.svg" alt=""> Import KML File</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><img src="images/Geo-fence.svg" alt=""> Geo Fence</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="tab-content" id="pills-tabContent">
+                                                    <div class="tab-pane fade " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                        <div class="kml_pill">
+                                                            <form method="post" action="#" id="#">
+                                                                  <div class="form-group files" >
+                                                                      <a class="close fa fa-close"></a>
+                                                                  
+                                                                    <input type="file" class="form-control" multiple="">
+                                                                  </div>
+                                                                  <div class="files-browse" style="display:none;">
+                                                                      <a class="close fa fa-close"></a>
+                                                                      <h6>Select File</h6>
+                                                                    <div class="form-group row">
+                                                                        <label for="inputPassword" class="col-5 col-form-label">Data (D:)</label>
+                                                                        <div class="col-7">
+                                                                          <input type="text" class="form-control" id="inputPassword" placeholder="Select">
+                                                                        </div>
+                                                                      </div>
+                                                                      <div class="text-center">
+                                                                            <button type="button" class="btn btn-info"  >Submit</button>
+                                                                        </div>
+                                                                  </div>
+                                                              </form>
+                                                             <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d11762529.67357326!2d75.91547884574095!3d22.074184646904868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1600406385069!5m2!1sen!2sin" width="100%" height="200" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                                       <div id="map"></div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                
+                                        <div class="row mt-2 map_latd">
+                                            <div class="col-md-2">
+                                                <h6 class="input_head">latlon:</h6>
+                                            </div>
+                                            <div class="col-md-5 pr-md-1">
+                                                <div class="input-group ">
+                                                    <input type="text" class="form-control disabled " id="Latlng"  placeholder="Log/Latitude" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 pl-md-1">
+                                                <h6 class="input_head">Radius:</h6>
+                                            </div>
+                                            <div class="col-md-3 pr-md-0 pl-md-2">
+                                                <div class="input-group ">
+                                                    <input type="text" class="form-control disabled " id="geofenceRadius"  placeholder="Radius" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div class="col-md-4 px-1 tbl_left_outer pb-5">
+                                    <div  class="dash_content__right map  map-gallery pb-2 ">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                 <h6 class="input_head">Photo Gallery</h6>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" id="slickSlider">
+                                                <div class="slick-slider">
+                                                    <div class="gallery">
+                                                        <div data-toggle="modal" data-target="#modal">
+                                                            <a href="#lightbox" data-slide-to="2"><img src="images/upload_profile.svg" class="img-fluid mt-2 mb-0"></a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                  
+                                           <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Photo Gallery</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="galleryModal">
+                </div>
+            </div>
+        </div>
+    </div>
+                                       
+                                    </div>
+                                    <div class="upload-photo  mb-4">
+                                             <input id="fileInput" type="file" multiple="multiple" style="display: none;" accept="image/*" />
+                                            <button type="button" onclick="document.getElementById('fileInput').click();" class="btn btn-info">Upload Photo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <!-- <div class="row Filter_tableContent">
+                        <div class="col-md-12 px-md-1">
+                            <div class="dash_filter">
+                                
+                                <div class="filter-form">
+                                    <div class="row ">
+                                        <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
+                                            <select class="form-control district" >
+                                                <option locationid="0"> Select District </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
+                                             <select class="form-control plotlocation ">
+                                                  <option selected locationid="">All Plot Location </option>
+                                                              <option  locationid="river">River</option>
+                                                              <option locationid="costal">Costal</option>
+                                                              <option locationid="interior">Interior</option>
+                                                              <option locationid="dam">Dam / Lake</option>
+                                                        </select>
+                                        </div>
+                                        <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
+                                            <select class="form-control ownership">
+                                                 <option selected locationid="">All Plot Ownership </option>
+                                                 <option  locationid="government">Government</option>
+                                                 <option locationid="private">Private</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
+                                             <input type="text" class="form-control TextSearch " placeholder="Search"/>
+                                        </div>
+                                        <div class="col-lg-2 col-sm-6 col-12 px-sm-1 px-0 my-1 my-lg-0 filter_btn text-sm-right text-center">
+                                            <button type="button" class="btn btn-outline-dark mb-0" data-btn="Apply"><i class="fa fa-search"></i> Apply</button>
+                                            <button type="button" class="btn btn-filter mb-0" data-btn="filter"><i class="fa fa-filter"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                           
+                        </div>
+                             <div class="dash_table mb-0" data-table="quarryTable">
+                       
+                            </div>
+                    </div>   
+                </div>
+            </div>
+            <div id="tblPagination"></div>
+            <div class="dash_footer">
+                <p>Copyright © 2020 Mahamining All rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+  </div>
+   <input type="hidden" data-toggle="modal" data-target="#submitModal"/>
+   <!-- Modal -->
+    <!-- <div class="modal fade submit-modal" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="top-close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="model-check">
+                        <i class="fa fa-check"></i>
+                    </div>
+                    <h3 id="Smessage"></h3>
+                    <h6 class="text-danger d-none " id="GeofenceMessage"></h6>
+                    <div class="text-center">
+                        <button type="button" id="quarryOk" class="btn btn-info mb-0" data-dismiss="modal">Ok</button>
+                          <button type="button" id="GeofenceYes" class="btn btn-info mb-0 d-none isgeofenceExist " data-dismiss="modal">Yes</button>
+                          <button type="button" id="GeofenceNo" class="btn btn-danger mb-0 d-none isgeofenceExist " data-dismiss="modal">NO</button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+ -->

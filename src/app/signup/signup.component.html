@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="container mt-5 col-5 col-md-5">
+        <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="duplicateEmail">
+            <button type="button" class="close" (click)="close()">&times;</button> Email already exit. Please login or register a new email.
+        </div>
+        <h2 class="text-center"><u>Registration form</u></h2>
+        <form #register="ngForm" (ngSubmit)="onRegister(register.value)" autocomplete="off">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" #username="ngModel" class="form-control" name="username" placeholder="Enter username" ngModel required>
+                <div *ngIf="username.invalid && (username.touched || username.dirty)">
+                    <small class="text-danger" *ngIf="username.errors.required">*username is required</small>
+                    <small class="text-danger" *ngIf="username.errors.pattern">*Please enter a valid username</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" #email="ngModel" class="form-control" name="email" placeholder="Enter email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" ngModel required>
+                <div *ngIf="email.invalid && (email.touched || email.dirty)">
+                    <small class="text-danger" *ngIf="email.errors.required">*Email is required</small>
+                    <small class="text-danger" *ngIf="email.errors.pattern">*Please enter a valid email</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" #password="ngModel" class="form-control" name="password" placeholder="Enter password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" ngModel required>
+                <div *ngIf="password.invalid && (password.touched || password.dirty)">
+                    <small class="text-danger" *ngIf="password.errors.required">*Password is required</small>
+                    <small class="text-danger" *ngIf="password.errors.pattern">*Please enter minimum 8 characters and at least 1 letter and number</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cpassword">Confirm Password</label>
+                <input type="password" #cpassword="ngModel" class="form-control" name="cpassword" placeholder="Repeat your password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" ngModel required>
+                <div *ngIf="(cpassword.invalid && (cpassword.touched || cpassword.dirty))">
+                    <small class="text-danger" *ngIf="cpassword.errors.required">*Password is required</small>
+                    <small class="text-danger" *ngIf="cpassword.errors.pattern">*Please enter minimum 8 characters and at least 1 letter and number</small>
+                </div>
+                <div *ngIf="passwordError">
+                    <small class="text-danger" *ngIf="passwordError">*Password doesn't match</small>
+                </div>
+
+            </div>
+            <button [disabled]="register.form.invalid" type="submit" class="btn btn-primary">Submit</button> |
+            <a routerLink="/login" class="btn btn-primary">Login</a>
+        </form>
+    </div>
+    <div class="col-1 col-md-1"></div>
+</div>

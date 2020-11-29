@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="container mt-3 col-8">
+        <div class="alert alert-success alert-dismissible" role="alert" *ngIf="userMessage">
+            <button type="button" class="close" (click)="close()">&times;</button> details Successful. Please click on user details to view the details.
+        </div>
+        <h2 class="text-center"><u>USER FORM</u></h2>
+        <form #userForm="ngForm" (ngSubmit)="onUserClick(userForm.value)" autocomplete="off">
+            <div class="form-group row">
+
+                <div class="col-sm-6">
+                    <label for="firstName" class="col-sm-4 col-form-label">First Name:</label>
+                    <input type="text" #firstName="ngModel" class="form-control" name="firstName" placeholder="Enter first name" [(ngModel)]="user.firstName" required>
+                    <div *ngIf="firstName.invalid && (firstName.touched || firstName.dirty)">
+                        <small class="text-danger" *ngIf="firstName.errors.required">*Name is required</small>
+                        <small class="text-danger" *ngIf="firstName.errors.pattern">*Please enter a valid name</small>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="lastName" class="col-sm-4 col-form-label">Last Name:</label>
+                    <input type="text" #lastName="ngModel" class="form-control" name="lastName" placeholder="Enter last name" [(ngModel)]="user.lastName" required>
+                    <div *ngIf="lastName.invalid && (lastName.touched || lastName.dirty)">
+                        <small class="text-danger" *ngIf="lastName.errors.required">*Name is required</small>
+                        <small class="text-danger" *ngIf="lastName.errors.pattern">*Please enter a valid name</small>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label for="phone" class="col-sm-4 col-form-label">Mobile No.:</label>
+                    <input type="text" #phone="ngModel" class="form-control" name="phone" placeholder="Enter mobile no." pattern="^((\+){1}91){1}[1-9]{1}[0-9]{9}$" [(ngModel)]="user.phone" required>
+                    <div *ngIf="phone.invalid && (phone.touched || phone.dirty)">
+                        <small class="text-danger" *ngIf="phone.errors.required">*Phone is required</small>
+                        <small class="text-danger" *ngIf="phone.errors.pattern">*Please enter a valid number(+91)</small>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="email" class="col-sm-4 col-form-label">Email address:</label>
+                    <input type="email" #email="ngModel" class="form-control" name="email" placeholder="Enter email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [(ngModel)]="user.email" required [disabled]="isEditForm">
+                    <div *ngIf="email.invalid && (email.touched || email.dirty)">
+                        <small class="text-danger" *ngIf="email.errors.required">*Email is required</small>
+                        <small class="text-danger" *ngIf="email.errors.pattern">*Please enter a valid email</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label for="date" class="col-sm-6 col-form-label">Date of Birth:</label>
+                    <input type="date" #date="ngModel" class="form-control" name="date" [(ngModel)]="user.date" required>
+                    <small class="text-danger" *ngIf="date.invalid && (date.touched || date.dirty)">*Date is required</small>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="qualification" class="col-sm-4 col-form-label">Qualification</label>
+                    <input type="text" #qualification="ngModel" class="form-control" name="qualification" placeholder="Enter qualification " [(ngModel)]="user.qualification" required>
+                    <small class="text-danger" *ngIf="qualification.invalid && (qualification.touched || qualification.dirty)">*qualification  is required</small>
+                </div>
+            </div>
+
+            <button [disabled]="userForm.form.invalid" type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>

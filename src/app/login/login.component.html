@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="container mt-5 col-5 col-md-5">
+        <div class="alert alert-success alert-dismissible" role="alert" *ngIf="loginMessage">
+            <button type="button" class="close" (click)="close()">&times;</button> Registration Successful. Please login.
+        </div>
+        <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="passwordWrong">
+            <button type="button" class="close" (click)="close()">&times;</button> Password is wrong, Please enter the correct password.
+        </div>
+        <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="emailNotExist">
+            <button type="button" class="close" (click)="close()">&times;</button> Email does not exist, Please register.
+        </div>
+        <h2 class="text-center"><u>USER LOGIN</u></h2>
+        <form #login="ngForm" (ngSubmit)="onLogin(login.value)" autocomplete="off">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" #email="ngModel" class="form-control" name="email" placeholder="Enter email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" ngModel required>
+                <div *ngIf="email.invalid && (email.touched || email.dirty)">
+                    <small class="text-danger" *ngIf="email.errors.required">*Email is required</small>
+                    <small class="text-danger" *ngIf="email.errors.pattern">*Please enter a valid email</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" #password="ngModel" class="form-control" name="password" placeholder="Enter password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" ngModel required>
+                <div *ngIf="password.invalid && (password.touched || password.dirty)">
+                    <small class="text-danger" *ngIf="password.errors.required">*Password is required</small>
+                    <small class="text-danger" *ngIf="password.errors.pattern">*Please enter minimum 8 characters and at least 1 letter and number</small>
+                </div>
+            </div>
+            <button [disabled]="login.form.invalid" type="submit" class="btn btn-primary">Submit</button> |
+            <a routerLink="/register" class="btn btn-primary">Register</a>
+        </form>
+    </div>
+    <div class="col-1 col-md-1"></div>
+</div>
