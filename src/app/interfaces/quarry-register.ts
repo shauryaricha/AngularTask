@@ -92,7 +92,7 @@ export interface IMineral{
     materialId: number;
     type: string;
 }
-export interface IQuarryRegister {
+export interface IQuarryRegisterResponseModel {
     area: string;
     category: number;
     categoryName: string;
@@ -126,12 +126,12 @@ export interface IQuarryRegister {
     parentPlotName?: string;
     plotType: number;
     quantity: number;
-    quarryPhotos: [];
+    quarryPhotos: IQuarryPhoto[];
     remark: string;
     riverCostal: string;
     riverName: string;
     siteModels?: string;
-    siteResponseModels: [];
+    siteResponseModels: ISiteModel[];
     state: string;
     stateId: number;
     taluka: string;
@@ -149,7 +149,112 @@ export interface IQuarryRegisterApiResponse{
     statusCode: string;
     statusMessage: string;
     responseData: {
-        responseData1: IQuarryRegister[],
+        responseData1: IQuarryRegisterResponseModel[],
         responseData2: IPagingDetails
     }
+}
+
+export interface IQuarrySearchCriteria{
+    districtId: number;
+    pageNumber: number;
+    pagesize: number;
+    ownerShip: string;
+    location: string;
+    plotType: number;
+    textSearch: string;
+}
+
+export interface IQuarryRegisterUpdateApiResponse{
+    responseData_Geofence: any;
+    responseData_Quarry: any;
+    statusCode_Geofence: string;
+    statusCode_Quarry: string;
+    statusMessage_Geofence: string;
+    statusMessage_Quarry: string;
+}
+export interface IQuarryPhoto{
+    imagePath: string;
+}
+
+export interface ISiteModel{
+    categoryName: string;
+    state: string;
+    division: string;
+    district: string;
+    taluka: string;
+    villageName: string;
+    siteId:number;
+    lclServeyId?: string;
+    location: string;
+    category: number;
+    stateId: number;
+    divisionId: number;
+    districtId: number;
+    talukaId: number;
+    censusId: number;
+    surveyNo: string;
+}
+
+export interface IQuarryApiRequestModel
+{
+    quarryRegisterModel: IQuarryRegisterRequestModel;
+    geofenceModel: IGeofenceModel;
+}
+
+export interface IQuarryRegisterRequestModel {
+    id: number;
+    plotType: number;
+    name: string;
+    riverCostal: string;
+    riverName: string;
+    ownerShip: string;
+    govt: string;
+    departmentId: string;
+    parentPlotId: number;
+    category: number;
+    stateId: number;
+    divisionId: number;
+    districtId:number;
+    villageId: number;
+    cityId: number;
+    talukaId: number;
+    censusId: number;
+    area: string;
+    remark: string;
+    createdBy: string;
+    modifiedBy: string;
+    latitude: string;
+    longitude: string;
+    quarryPhotos:IQuarryPhoto[];
+    siteModels: ISiteModel[];
+    minerals:IMineral[];
+}
+
+export interface IGeofenceMaster{
+    id: number;
+    geofenceName: string;
+    geofenceType: number;
+    polygonText: string;
+    distance: number;
+    createdBy: string;
+    modifiedBy: string;
+}
+
+export interface IGeofenceDetails{
+    id: number;
+    geofenceid: number;
+    alertId: string;
+    stateId: number;
+    divisionId: number;
+    village: string;
+    plotTypeId: number;
+    plotId: number;
+    siteId: number;
+    createdBy: string;
+    modifiedBy: string;
+}
+
+export interface IGeofenceModel{
+    GeofenceMaster:IGeofenceMaster;
+    GeofenceDetails: IGeofenceDetails;
 }

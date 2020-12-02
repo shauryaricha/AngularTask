@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { IDistrict, IGetDistrictsApiResponse, IGetTalukasApiResponse, IGetVillageCityApiResponse, IQuarryRegisterApiResponse, ITaluka, IVillageCity } from '../interfaces/quarry-register';
+import { IDistrict, IGeofenceModel, IGetDistrictsApiResponse, IGetTalukasApiResponse, IGetVillageCityApiResponse, IQuarryApiRequestModel, IQuarryRegisterApiResponse, IQuarryRegisterRequestModel, IQuarryRegisterUpdateApiResponse, IQuarrySearchCriteria, ITaluka, IVillageCity } from '../interfaces/quarry-register';
 
 @Injectable({
     providedIn: 'root'
@@ -37,20 +37,37 @@ export class QuarryRegisterAPiService{
         }), catchError(this.handleError));
     }
 
-    getQuarryRegisters( districtId: number,  pageNumber: number = 1, pagesize: number = 10, ownerShip?: string, location?: string, plotType?:number){
-        if(!plotType){
-            plotType = 2;
+        getQuarryRegisters( quarrySearchCriteria: IQuarrySearchCriteria){
+            let plotType = quarrySearchCriteria.plotType ? quarrySearchCriteria.plotType: 2;
+        let queryString  = '?plotType=' + plotType + '&DistrictId='+quarrySearchCriteria.districtId+ "&pageno="+quarrySearchCriteria.pageNumber+"&pagesize="+quarrySearchCriteria.pagesize;
+        if(quarrySearchCriteria.ownerShip){
+            queryString+= '&ownership='+ quarrySearchCriteria.ownerShip;
         }
-        let queryString  = '?plotType=' + plotType + '&DistrictId='+districtId+ "&pageno="+pageNumber+"&pagesize="+pagesize;
-        if(ownerShip){
-            queryString+= '&ownership='+ ownerShip;
+        if(quarrySearchCriteria.location){
+            queryString+= '&location='+ quarrySearchCriteria.location;
         }
-        if(location){
-            queryString+= '&location='+ location;
+        if(quarrySearchCriteria.textSearch){
+            queryString+= '&textSearch='+ quarrySearchCriteria.textSearch;
         }
 
         return this.http.get<IQuarryRegisterApiResponse>(this.apiBaseUrl + '/mineral-mapping/quarry-registers/GetAll' + queryString).pipe(map(response => {
             return response.responseData;
+            }), catchError(this.handleError));
+    }
+
+    createQuarryRegister(quarryRegister: IQuarryRegisterRequestModel) {
+        return this.http.post<IQuarryRegisterUpdateApiResponse>(this.apiBaseUrl + '/mineral-mapping/quarry-registers-wrapper', quarryRegister).pipe(map(response => {
+            return response;
+            }), catchError(this.handleError));
+    }
+
+    updateQuarryRegister(quarryRegister: IQuarryRegisterRequestModel) {
+        const quarryRegisterApiRequestModel: IQuarryApiRequestModel = {
+            quarryRegisterModel: quarryRegister,
+            geofenceModel: {} as IGeofenceModel
+        };
+        return this.http.put<IQuarryRegisterUpdateApiResponse>(this.apiBaseUrl + '/mineral-mapping/quarry-registers-wrapper', quarryRegisterApiRequestModel).pipe(map(response => {
+            return response;
             }), catchError(this.handleError));
     }
 

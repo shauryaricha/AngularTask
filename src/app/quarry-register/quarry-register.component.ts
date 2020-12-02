@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { map, repeat, take, tap } from 'rxjs/operators';
+import { distinct, map, repeat, take, tap } from 'rxjs/operators';
 import { SurveyLocation } from '../constants/quarry-register';
-import { IDistrict, IQuarryRegister, ISurveyDetail, ITaluka, IVillageCity } from '../interfaces/quarry-register';
+import { IDistrict, IQuarryApiRequestModel, IQuarryRegisterRequestModel, IQuarryRegisterResponseModel, IQuarrySearchCriteria, ISurveyDetail, ITaluka, IVillageCity } from '../interfaces/quarry-register';
 import { QuarryRegisterAPiService } from '../service/quarry-register.service';
 
 @Component({
@@ -18,13 +18,7 @@ export class QuarryRegisterComponent implements OnInit {
   surveyLocation: string;
   surveyNumber: string;
 
-  surveyDetails: ISurveyDetail[] = [];
-
-    taluka: number;
-    village: number;
-    city: number;
-    category: number= 0;
-    district: number;
+  
     districts: IDistrict[];
     talukas: ITaluka[];
     villages: IVillageCity[];
@@ -32,16 +26,31 @@ export class QuarryRegisterComponent implements OnInit {
     surveyTalukas: ITaluka[];
     surveyVillages: IVillageCity[];
     surveyCities: IVillageCity[];
-quarryRegisters: IQuarryRegister[] = [];
+
+quarryRegisters: IQuarryRegisterResponseModel[] = [];
 quarryRegisterTotalPages:number;
 quarryRegisterCurrentPage: number;
 
+quarryRegister: IQuarryRegisterRequestModel = {} as IQuarryRegisterRequestModel;
 surveyEditMode: boolean;
 
 
+
+ quarrySearchCriteria: IQuarrySearchCriteria = {
+  districtId: 0,
+  pageNumber: 1,
+  pagesize: 10,
+  ownerShip: '',
+  location: '',
+  plotType: null,
+  textSearch: ''
+};
+
   constructor(private quarryRegisterAPiService: QuarryRegisterAPiService) { }
 
-  
+  searchQuarryRegisters() {
+    this.quarryRegisterAPiService.getQuarryRegisters(this.quarrySearchCriteria).subscribe(res => {this.quarryRegisters = res.responseData1});
+  }
 
   onDistrictChange(districtId: number): void{
     this.surveyDistrict = districtId;
@@ -49,8 +58,8 @@ surveyEditMode: boolean;
       this.talukas = talukas;
       this.surveyTalukas = talukas;
       if(talukas.length === 1){
-        this.taluka = talukas[0].id;
-        this.surveyTaluka = this.taluka;
+        this.quarryRegister.talukaId = talukas[0].id;
+        this.surveyTaluka = this.quarryRegister.talukaId;
       }
     })).subscribe();
   }
@@ -66,18 +75,18 @@ surveyEditMode: boolean;
 
   onTalukaChange(talukaId: number): void{
       this.surveyTaluka = talukaId;
-      this.village = undefined;
-      this.city = undefined;
+      this.quarryRegister.villageId = undefined;
+      this.quarryRegister.cityId = undefined;
       this.surveyVillage = undefined;
       this.surveyCity = undefined;
 
-      if(this.category === 0){
+      if(this.quarryRegister.category === 0){
       this.quarryRegisterAPiService.getVillagesByCriteria(talukaId).pipe(map(villages => {
         this.villages = villages;
         this.surveyVillages = villages;
         if(villages.length === 1){
-          this.village = villages[0].id;
-          this.surveyVillage = this.village;    
+          this.quarryRegister.villageId = villages[0].id;
+          this.surveyVillage = this.quarryRegister.villageId;    
         }
       })).subscribe();
     }
@@ -85,8 +94,8 @@ surveyEditMode: boolean;
       this.quarryRegisterAPiService.getCitiesByTalukaId(talukaId).pipe(map(cities => {
         this.cities = cities;
         if(cities.length === 1){
-          this.city = cities[0].id;
-          this.surveyCity = this.city;
+          this.quarryRegister.cityId = cities[0].id;
+          this.surveyCity =  this.quarryRegister.cityId;
         }
       })).subscribe();
     }
@@ -118,24 +127,29 @@ addOrUpdateSurvey() {
   const surveyTaluka = this.surveyTalukas.find(taluka => taluka.id == Number(this.surveyTaluka));
   const surveyVillageCity = this.surveyVillage ? this.surveyVillages.find(village => village.id == Number(this.surveyVillage)) : this.surveyCities.find(city => city.id == Number(this.surveyCity));
  
-  const surveyDetail ={
-    surveyLocation: this.surveyLocation,
-    surveyLocationLabel: SurveyLocation[this.surveyLocation],
-    surveyCategory: this.surveyCategory,
-    surveyDistrict: this.surveyDistrict,
-    surveyDistrictLabel: surveyDistrict.district,
-    surveyTaluka: Number(this.surveyTaluka),
-    surveyTalukaLabel: surveyTaluka.taluka,
-    surveyVillageCity: this.surveyVillage ? Number(this.surveyVillage): Number(this.surveyCity),
-    surveyVillageCityLabel: surveyVillageCity.name,
-    surveyNumber: this.surveyNumber,
+  const siteModel ={
+    location: this.surveyLocation,
+    category: this.surveyCategory,
+    categoryName: '',
+    districtId: this.surveyDistrict,
+    district: surveyDistrict.district,
+    talukaId: Number(this.surveyTaluka),
+    taluka: surveyTaluka.taluka,
+    censusId: this.surveyVillage ? Number(this.surveyVillage): Number(this.surveyCity),
+    villageName: surveyVillageCity.name,
+    surveyNo: this.surveyNumber,
+    state: '',
+    division: '',
+    divisionId: 0,
+    siteId: 0,
+    stateId: 0
   }
 
 if(this.surveyEditMode){
-  this.surveyDetails[this.surveyEditIndex]= surveyDetail;
+  this.quarryRegister.siteModels[this.surveyEditIndex]= siteModel;
 }
 else{
-  this.surveyDetails.push(surveyDetail);
+  this.quarryRegister.siteModels.push(siteModel);
 }
 
   this.surveyEditMode = false;
@@ -144,38 +158,38 @@ else{
 }
 
 deleteSurveyDetail(index){
-  this.surveyDetails.splice(index, 1);
+  this.quarryRegister.siteModels.splice(index, 1);
 }
 
 surveyEditIndex: number;
 editSurveyDetail(index){
   this.surveyEditIndex = index;
   this.surveyEditMode = true;
-  const surveyDetail = this.surveyDetails[index];
+  const surveyDetail = this.quarryRegister.siteModels[index];
 
-  this.surveyLocation = surveyDetail.surveyLocation;
-  this.surveyCategory = surveyDetail.surveyCategory;
-  this.surveyDistrict = surveyDetail.surveyDistrict;
+  this.surveyLocation = surveyDetail.location;
+  this.surveyCategory = surveyDetail.category;
+  this.surveyDistrict = surveyDetail.districtId;
   
   this.quarryRegisterAPiService.getTalukasByUserIdDistrictId(3872, this.surveyDistrict).pipe(map(talukas => {
     this.surveyTalukas = talukas;
-    this.surveyTaluka = surveyDetail.surveyTaluka;
+    this.surveyTaluka = surveyDetail.talukaId;
 
-    if(surveyDetail.surveyCategory == 0){
+    if(surveyDetail.category == 0){
       this.quarryRegisterAPiService.getVillagesByCriteria(this.surveyTaluka).pipe(map(villages => {
         this.surveyVillages = villages;
-       this.surveyVillage = Number(surveyDetail.surveyVillageCity);
+       this.surveyVillage = Number(surveyDetail.censusId);
       })).subscribe();
     }
     else{
       this.quarryRegisterAPiService.getCitiesByTalukaId(this.surveyTaluka).pipe(map(cities => {
         this.surveyCities = cities;
-       this.surveyCity = Number(surveyDetail.surveyVillageCity);
+       this.surveyCity = Number(surveyDetail.censusId);
       })).subscribe();
     }
   })).subscribe();
 
-  this.surveyNumber = surveyDetail.surveyNumber;
+  this.surveyNumber = surveyDetail.surveyNo;
 }
 
 clearSurvey(){
@@ -185,15 +199,58 @@ clearSurvey(){
 
 }
 
+updateQuarryRegister(){
+  this.quarryRegisterAPiService.updateQuarryRegister(this.quarryRegister).subscribe();
+}
+
+createQuarryRegister(){
+  this.quarryRegisterAPiService.createQuarryRegister(this.quarryRegister).subscribe();
+}
+
 getLatLong(){
-   if(this.village){
-     const village = this.villages.find(village => village.id == this.village);
-      return `${village.latitude},${village.longitude}`;
-   }
-   else if(this.city){
-    const city = this.cities.find(city => city.id == this.city);
-    return `${city.latitude},${city.longitude}`;
-   }
+  //  if(this.quarryRegister.villageId){
+  //    const village = (this.villages ?? []).find(village => village.id == this.quarryRegister.villageId);
+  //     return `${village.latitude},${village.longitude}`;
+  //  }
+  //  else if(this.quarryRegister.cityId){
+  //   const city = (this.cities ?? []).find(city => city.id == this.quarryRegister.cityId);
+  //   return `${city.latitude},${city.longitude}`;
+  //  }
+}
+
+mapToQuarryRegisterRequestModel(quarryRegister: IQuarryRegisterResponseModel){
+  return {
+    id: quarryRegister.id,
+    plotType: quarryRegister.plotType,
+    name: quarryRegister.name,
+    riverCostal: quarryRegister.riverCostal,
+    riverName: quarryRegister.riverName,
+    ownerShip:quarryRegister.ownerShip,
+    govt:quarryRegister.govt,
+    departmentId: quarryRegister.departmentId,
+    parentPlotId:quarryRegister.parentPlotId,
+    category: quarryRegister.category,
+    stateId: quarryRegister.stateId,
+    districtId: quarryRegister.districtId,
+    divisionId: quarryRegister.divisionId,
+    talukaId: quarryRegister.talukaId,
+    villageId: quarryRegister.talukaId,
+    cityId: quarryRegister.talukaId,
+    censusId: quarryRegister.censusId,
+    area: quarryRegister.area,
+    remark:quarryRegister.remark,
+    createdBy: quarryRegister.createdBy,
+    modifiedBy:quarryRegister.modifiedBy,
+    latitude:quarryRegister.latitude,
+    longitude: quarryRegister.longitude,
+    quarryPhotos:quarryRegister.quarryPhotos,
+    siteModels: quarryRegister.siteResponseModels,
+    minerals:quarryRegister.minerals,
+  }
+}
+
+loadQuarryRegister(_quarryRegister: IQuarryRegisterResponseModel){
+  this.quarryRegister = this.mapToQuarryRegisterRequestModel(_quarryRegister);
 }
 
   ngOnInit() {
@@ -201,12 +258,13 @@ getLatLong(){
       this.districts = districts;
 
       if(districts.length === 1){  
-        this.district = districts[0].id;
-        this.onDistrictChange(this.district);
+        this.quarryRegister.districtId = districts[0].id;
+        this.onDistrictChange(this.quarryRegister.districtId);
         }
 
 
-        this.quarryRegisterAPiService.getQuarryRegisters(districts[0].id).pipe(map(response => {
+        this.quarrySearchCriteria.districtId = districts[0].id;
+        this.quarryRegisterAPiService.getQuarryRegisters(this.quarrySearchCriteria).pipe(map(response => {
           this.quarryRegisters = response.responseData1;
           this.quarryRegisterTotalPages = response.responseData2.totalPages;
           this.quarryRegisterCurrentPage = response.responseData2.pageNo;

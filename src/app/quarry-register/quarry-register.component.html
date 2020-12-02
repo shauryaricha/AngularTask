@@ -15,7 +15,8 @@
                                <div class="top-btn-group text-sm-right text-center mb-2">
                                     <button type="button" data-button="edit"  class="btn dept_submit disabled" ><i class="fa fa-pen"></i>Edit</button>
                                     <button type="button" data-button="cancel" class="btn dept_submit disabled"><i class="fa fa-times"></i>Clear</button>
-                                    <button type="button" data-button="Saveupdate"  class="btn dept_submit disabled " ><i class="fa fa-sign-out-alt"></i>Submit</button>
+                                    <button type="button" data-button="Saveupdate" (click)="createQuarryRegister()" class="btn dept_submit disabled " ><i class="fa fa-sign-out-alt"></i>Submit</button>
+                                    <button type="button" data-button="Saveupdate" (click)="updateQuarryRegister()" class="btn dept_submit disabled " ><i class="fa fa-sign-out-alt"></i>Update</button>
                                 </div>
                             </div>
                         </div>
@@ -33,7 +34,7 @@
                                                  </div>
                                                  <div class="col-lg-7">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control " data-reuired="1" data-entry="name"  placeholder="Enter Quarry Name"/>
+                                                        <input type="text" class="form-control" [(ngModel)]="quarryRegister.name" data-reuired="1" data-entry="name"  placeholder="Enter Quarry Name"/>
                                                     </div>
                                                  </div>
                                              </div>
@@ -45,12 +46,12 @@
                                                  </div>
                                                  <div class="col-lg-7">
                                                     <div class="form-group">
-                                                        <select class="form-control " data-reuired="1" data-entry="riverCostal" id="plotlocation">
+                                                        <select class="form-control " data-reuired="1" data-entry="riverCostal" id="plotlocation" [(ngModel)]="quarryRegister.riverCostal">
                                                                 <option selected locationid="0">Select Plot Location</option>
-                                                                <option locationid="RIVER">River</option>
-                                                                <option locationid="COSTAL">Costal</option>
-                                                                <option locationid="INTERIOR">Interior</option>
-                                                                <option locationid="DAM">Dam / Lake</option>
+                                                                <option value="RIVER">River</option>
+                                                                <option value="COSTAL">Costal</option>
+                                                                <option value="INTERIOR">Interior</option>
+                                                                <option value="DAM">Dam / Lake</option>
                                                               </select>
                                                     </div>
                                                  </div>
@@ -63,7 +64,7 @@
                                                  </div>
                                                  <div class="col-lg-7">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control " data-entry="riverName"  placeholder="River/Coast name">
+                                                        <input type="text"  [(ngModel)]="quarryRegister.riverName" class="form-control " data-entry="riverName"  placeholder="River/Coast name">
                                                     </div>
                                                  </div>
                                              </div>
@@ -84,10 +85,10 @@
                                                 </div>
                                                  <div class="col-lg-7">
                                                     <div class="form-group">
-                                                        <select class="form-control " data-reuired="1" data-entry="ownerShip"  id="plotownership">
-                                                            <option selected locationid="0">Select Plot Ownership</option>
-                                                              <option  locationid="GOVERNMENT">Government</option>
-                                                              <option locationid="PRIVATE">Private</option>
+                                                        <select class="form-control " data-reuired="1" data-entry="ownerShip"  id="plotownership" [(ngModel)]="quarryRegister.ownerShip">
+                                                            <option selected disabled>Select Plot Ownership</option>
+                                                              <option  value="GOVERNMENT">Government</option>
+                                                              <option value="PRIVATE">Private</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -100,10 +101,10 @@
                                                 </div>
                                                  <div class="col-lg-7">
                                                     <div class="form-group">
-                                                        <select class="form-control " data-reuired="1" data-entry="govt" id="government">
-                                                            <option selected locationid="0">Select Government</option>
-                                                              <option  locationid="CENTRAL">Central</option>
-                                                              <option locationid="STATE">State</option>
+                                                        <select class="form-control " data-reuired="1" data-entry="govt" id="government" [(ngModel)]="quarryRegister.govt">
+                                                            <option selected disabled>Select Government</option>
+                                                              <option  value="CENTRAL">Central</option>
+                                                              <option value="STATE">State</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -200,11 +201,11 @@
                                                  </div>
                                                  <div class="col-lg-7  px-md-0">
                                                     <div class="custom-control custom-radio custom-control-inline ">
-                                                        <input class="custom-control-input" type="radio" data-entry="category" name="qCategory" id="qCategory1" [value]="0" [(ngModel)]="category" (change)="surveyCategory=category " />
+                                                        <input class="custom-control-input" type="radio" data-entry="category" name="qCategory" id="qCategory1" [value]="0" [(ngModel)]="quarryRegister.category" (change)="surveyCategory=quarryRegister.category " />
                                                         <label class="custom-control-label" for="qCategory1">Rural</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline ">
-                                                        <input class="custom-control-input" type="radio" data-entry="category" name="qCategory" id="qCategory2" [value]="1" [(ngModel)]="category" (change)="surveyCategory=category "/>
+                                                        <input class="custom-control-input" type="radio" data-entry="category" name="qCategory" id="qCategory2" [value]="1" [(ngModel)]="quarryRegister.category" (change)="surveyCategory=quarryRegister.category "/>
                                                         <label class="custom-control-label" for="qCategory2">Urban</label>
                                                     </div>
                                                  </div>
@@ -217,7 +218,7 @@
                                                 </div>
                                                  <div class="col-lg-7">
                                                     <div class="form-group">
-                                                        <select [disabled]="true" class="form-control" data-required="1" data-entry="district" [ngModel]="district" (ngModelChange)="onDistrictChange($event)">
+                                                        <select [disabled]="true" class="form-control" data-required="1" data-entry="district" [ngModel]="quarryRegister.districtId" (ngModelChange)="onDistrictChange($event)">
                                                                 <option value="undefined" disabled>Select District</option>
                                                                 <option *ngFor="let district of districts" [value]="district.id">{{district.district}}</option>
                                                         </select>
@@ -240,7 +241,7 @@
                                                  </div>
                                             </div>
                                         </div>
-                                         <div class="col-lg-3" *ngIf="category === 0">
+                                         <div class="col-lg-3" *ngIf="quarryRegister.category === 0">
                                              <div class="row">
                                                 <div class="col-lg-5">
                                                     <h6 class="input_head requiredlabel"><span data-village-city="VillageCity">Village:</span> <span class="fa fa-asterisk"></span></h6>
@@ -256,7 +257,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-3" *ngIf="category === 1">
+                                        <div class="col-lg-3" *ngIf="quarryRegister.category === 1">
                                             <div class="row">
                                                <div class="col-lg-5">
                                                    <h6 class="input_head requiredlabel"><span data-village-city="VillageCity">City:</span> <span class="fa fa-asterisk"></span></h6>
@@ -433,13 +434,13 @@
                                     </tr>
                                     </thead>
                                     <tbody data-table="Survey_number">
-                                        <tr *ngFor="let surveyDetail of surveyDetails; let i=index">
+                                        <tr *ngFor="let surveyDetail of quarryRegister.siteModels; let i=index">
                                             <td scope="col">{{i+1}}</td>
-                                            <td scope="col">{{surveyDetail.surveyLocationLabel}}</td>
-                                            <td scope="col">{{surveyDetail.surveyDistrictLabel}}</td>
-                                            <td scope="col">{{surveyDetail.surveyTalukaLabel}}</td>
-                                            <td scope="col">{{surveyDetail.surveyVillageCityLabel}}</td>
-                                            <td scope="col">{{surveyDetail.surveyNumber}}</td>
+                                            <td scope="col">{{surveyDetail.location}}</td>
+                                            <td scope="col">{{surveyDetail.district}}</td>
+                                            <td scope="col">{{surveyDetail.taluka}}</td>
+                                            <td scope="col">{{surveyDetail.villageName}}</td>
+                                            <td scope="col">{{surveyDetail.surveyNo}}</td>
                                             <td scope="col"><span (click)="editSurveyDetail(i)">Edit</span><span (click)="deleteSurveyDetail(i)">Delete</span></td>
                                         </tr>
                                     </tbody>
@@ -604,31 +605,32 @@
                                                                         <div class="filter-form">
                                                                             <div class="row ">
                                                                                 <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
-                                                                                    <select class="form-control district" >
-                                                                                        <option locationid="0"> Select District </option>
+                                                                                    <select [disabled]="true" class="form-control" data-required="1" data-entry="district" [ngModel]="quarrySearchCriteria.districtId">
+                                                                                        <option [value]="undefined" disabled>Select District</option>
+                                                                                        <option *ngFor="let district of districts" [value]="district.id">{{district.district}}</option>
+                                                                                </select>
+                                                                                </div>
+                                                                                <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
+                                                                                    <select class="form-control plotlocation" data-reuired="1" data-entry="riverCostal"  [(ngModel)]="quarrySearchCriteria.plotType">
+                                                                                        <option selected [value]="">All Plot Location</option>
+                                                                                        <option [value]="1">River</option>
+                                                                                        <option [value]="2">Costal</option>
+                                                                                        <option [value]="3">Interior</option>
+                                                                                        <option [value]="4">Dam / Lake</option>
+                                                                                      </select>
+                                                                                </div>
+                                                                                <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
+                                                                                    <select class="form-control ownership" data-reuired="1" data-entry="ownerShip"   [(ngModel)]="quarrySearchCriteria.ownerShip">
+                                                                                        <option selected [value]="">All Plot Ownership</option>
+                                                                                          <option  [value]="GOVERNMENT">Government</option>
+                                                                                          <option [value]="PRIVATE">Private</option>
                                                                                     </select>
                                                                                 </div>
                                                                                 <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
-                                                                                     <select class="form-control plotlocation ">
-                                                                                          <option selected locationid="">All Plot Location </option>
-                                                                                                      <option  locationid="river">River</option>
-                                                                                                      <option locationid="costal">Costal</option>
-                                                                                                      <option locationid="interior">Interior</option>
-                                                                                                      <option locationid="dam">Dam / Lake</option>
-                                                                                                </select>
-                                                                                </div>
-                                                                                <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
-                                                                                    <select class="form-control ownership">
-                                                                                         <option selected locationid="">All Plot Ownership </option>
-                                                                                         <option  locationid="government">Government</option>
-                                                                                         <option locationid="private">Private</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="col-lg col-6 px-sm-1 px-0 my-1 my-lg-0">
-                                                                                     <input type="text" class="form-control TextSearch " placeholder="Search"/>
+                                                                                     <input type="text" class="form-control TextSearch" [(ngModel)]="quarrySearchCriteria.textSearch" placeholder="Search"/>
                                                                                 </div>
                                                                                 <div class="col-lg-2 col-sm-6 col-12 px-sm-1 px-0 my-1 my-lg-0 filter_btn text-sm-right text-center">
-                                                                                    <button type="button" class="btn btn-outline-dark mb-0" data-btn="Apply"><i class="fa fa-search"></i> Apply</button>
+                                                                                    <button type="button" class="btn btn-outline-dark mb-0" data-btn="Apply" (click)="searchQuarryRegisters()"><i class="fa fa-search"></i> Apply</button>
                                                                                     <button type="button" class="btn btn-filter mb-0" data-btn="filter"><i class="fa fa-filter"></i></button>
                                                                                 </div>
                                                                             </div>
@@ -648,7 +650,7 @@
                                                                             </tr>
                                                                             </thead>
                                                                             <tbody data-table="quarryTable">
-                                                                                <tr *ngFor="let quarryRegister of quarryRegisters; let i=index">
+                                                                                <tr *ngFor="let quarryRegister of quarryRegisters; let i=index" (click)="loadQuarryRegister(quarryRegister)">
                                                                                     <td scope="col">{{i+1}}</td>
                                                                                     <td scope="col">{{quarryRegister.district}}</td>
                                                                                     <td scope="col">{{quarryRegister.riverCostal}}</td>
