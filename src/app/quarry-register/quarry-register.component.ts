@@ -149,6 +149,9 @@ if(this.surveyEditMode){
   this.quarryRegister.siteModels[this.surveyEditIndex]= siteModel;
 }
 else{
+  if(!this.quarryRegister.siteModels) {
+    this.quarryRegister.siteModels = [];
+  }
   this.quarryRegister.siteModels.push(siteModel);
 }
 

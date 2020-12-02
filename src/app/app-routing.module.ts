@@ -6,6 +6,7 @@ import { UserFormComponent } from './user/user-form/user-form.component';
 import { UserListComponent } from './user/user-list/user-list.component';
 import { AuthGuard } from './signup/auth-guard';
 import { QuarryRegisterComponent } from './quarry-register/quarry-register.component';
+import { VehicleTrackingComponent } from './components/vehicle-tracking/vehicle-tracking.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,9 @@ const routes: Routes = [
   },
   {
     path: 'quarry', component: QuarryRegisterComponent
+  },
+  {
+    path: 'vehicle-tracking', component: VehicleTrackingComponent
   },
 ];
 

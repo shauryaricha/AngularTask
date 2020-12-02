@@ -10,6 +10,7 @@ import { UserListComponent } from './user/user-list/user-list.component';
 import { UserComponent } from './user/user.component';
 import { UserFormComponent } from './user/user-form/user-form.component';
 import { QuarryRegisterComponent } from './quarry-register/quarry-register.component';
+import { VehicleTrackingComponent } from './components/vehicle-tracking/vehicle-tracking.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { QuarryRegisterComponent } from './quarry-register/quarry-register.compo
     UserListComponent,
     UserComponent,
     UserFormComponent,
-    QuarryRegisterComponent
+    QuarryRegisterComponent,
+    VehicleTrackingComponent
   ],
   imports: [
     BrowserModule,
