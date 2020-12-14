@@ -1,1 +1,703 @@
-<p>vehicle-tracking works!</p>
+<div class="loadingDiv">
+    <div>
+    </div>
+</div>
+<div class="alert alert-dismissible hide w-100 h-100 align-middle" role="alert">
+    <div class="text-center align-middle m-auto">
+        <div style="color: #fff; font-size: 48px;">
+            <div class="lds-ripple">
+                <div></div>
+                <div></div>
+            </div>
+            <h1 id="alertText"></h1>
+            <h3 id="alertMsg"></h3>
+
+            <input type="button" value="Cancel Data Binding" class="btn btn-danger btn-sm" id="btnAlertCancel" />
+        </div>
+        <div id="alertButtons">
+            <div class="btn-group">
+                <button type="button" class="btn bg-light">Auto Closed :<span id="miliSecond"></span></button>
+                <button type="button" id="btnAlertPause" class="btn btn-warning" aria-label="Pause">
+                    <span aria-hidden="true" style="font-size: 0.6rem;">&#9612;&#9612;</span>
+                </button>
+                <button type="button" class="btn btn-danger" id="btnAlertClose" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <form id="form1" runat="server">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <!-- <%--<img id="miningHeader" src="images/miningHeader.png" alt="MahaMining" />--%> -->
+                        <ul class="list-group Details" id="OtherThanOnwerSearch">
+                            <li class="list-group-item">
+                                <h5 class="list-group-item-heading">Search Details
+                                </h5>
+
+                            </li>
+                            <li class="list-group-item p-4px">
+                                <ul class="nav nav-tabs nav-justified">
+                                    <li [ngClass]="{'active': activeTab === 'invoiceTab'}"
+                                        (click)="changTab('invoiceTab')">Invoice
+
+                                    </li>
+                                    <li (click)="changTab('dateTab')" [ngClass]="{'active': activeTab === 'dateTab'}">
+                                        Date
+
+                                    </li>
+                                    <li (click)="changTab('vehicleTab')"
+                                        [ngClass]="{'active': activeTab === 'vehicleTab'}">Vehicle
+
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="tabContent">
+                                    <div class="tab-pane" [ngClass]="(activeTab === 'invoiceTab') ? 'active': 'fade'">
+                                        <div class="input-group mt-5px" id="Div1" data-panel="1">
+                                            <span class="input-group-addon" title="Vehicle Number">
+                                                <i class="material-icons">directions_car</i></span>
+                                            <input type="text" data-entry="vehicle" title="Vehicle Number"
+                                                class="vehicle validate-alphanumeric form-control" maxlength="10"
+                                                placeholder="MH12AB1234" />
+                                            <span class="input-group-addon" title="Invoice Number">
+                                                <i class="material-icons">assignment</i></span>
+                                            <input type="text" data-entry="invoice" title="Invoice Number"
+                                                class="validate-number form-control" maxlength="8"
+                                                placeholder="123456" />
+                                            <span class="input-group-addon cp" title="Search" data-button="search"
+                                                id="BTNinvoiceSearch">
+                                                <i class="fas fa-search bold">search</i></span>
+                                            <span class="input-group-addon cp" title="Clear" data-button="clear"
+                                                id="BTNinvoiceClear">
+                                                <i class="material-icons bold">close</i></span>
+                                        </div>
+                                        <table class="table table-bordered table-hover" data-table="invoiceTable">
+                                        </table>
+                                        <div id="invoicePageNo" class="PageNo">
+                                        </div>
+                                        <ul class="list-group Details mt-5px" id="invoiceHideShowDetailsUL">
+                                            <li class="list-group-item hideShowDetails expand_more">
+                                                <h5 class="list-group-item-heading">Vehicle
+                                                    <span class="badge bg-f3f1ed">
+                                                        <i class="material-icons">expand_more</i></span>
+                                                </h5>
+                                            </li>
+                                            <li class="list-group-item p-0px">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item b-n bt br-0px">Number<span
+                                                            class="badge badge-info" id="Vehical"></span></li>
+                                                    <li class="list-group-item b-n bt">Owner<span
+                                                            class="badge badge-info" id="VehicleOwner"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Mobile<span
+                                                            class="badge badge-info" id="VehicleOwnerMobNo"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Driver
+                                                        Mobile<span class="badge badge-info" id="DriverMobileNo"></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <ul class="list-group Details mt-5px" id="invoiceInvoiceDetailsDiv">
+                                            <li class="list-group-item">
+                                                <h5 class="list-group-item-heading">Invoice</h5>
+                                            </li>
+                                            <li class="list-group-item p-0px">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item b-n bt br-0px">Invoice No<span
+                                                            class="badge badge-info" id="InvoiceNo"></span></li>
+                                                    <li class="list-group-item b-n bt">Validity<span
+                                                            class="badge badge-info" id="ValidityFrom"></span>
+                                                    </li>
+                                                    <li class="list-group-item  b-n bt">Source<span
+                                                            class="badge badge-info" id="PlotName"></span>
+                                                    </li>
+                                                    <li class="list-group-item  b-n bt">Destination<span
+                                                            class="badge badge-info" id="destination"></span>
+                                                    </li>
+                                                    <li class="list-group-item  b-n bt">Distance<span
+                                                            class="badge badge-info" id="Distance"></span>
+                                                    </li>
+                                                    <li class="list-group-item  b-n bt">Material<span
+                                                            class="badge badge-info" id="Material"></span>
+                                                    </li>
+                                                    <li class="list-group-item  b-n bt">Quantity<span
+                                                            class="badge badge-info" id="Quantity"></span>
+                                                    </li>
+
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-pane" [ngClass]="(activeTab === 'dateTab') ? 'active': 'fade'">
+                                        <div class="input-group mt-5px" id="Div2" data-panel="2">
+                                            <span class="input-group-addon" title="Vehicle Number">
+                                                <i class="material-icons">directions_car</i></span>
+                                            <input type="text" data-entry="vehicle" title="Vehicle Number"
+                                                class="vehicle validate-alphanumeric form-control" maxlength="10"
+                                                placeholder="MH12AB1234" />
+                                            <span class="input-group-addon" title="Date">
+                                                <i class="material-icons">date_range</i></span>
+                                            <input type="text" data-entry="date" title="Date"
+                                                class="validate-number form-control" placeholder="dd/mm/yyyy" />
+                                            <span class="input-group-addon cp" title="Search" data-button="search"
+                                                id="BTNdateSearch">
+                                                <i class="material-icons bold">search</i></span>
+                                            <span class="input-group-addon cp" title="Clear" data-button="clear"
+                                                id="BTNdateClear">
+                                                <i class="material-icons bold">close</i></span>
+                                        </div>
+                                        
+                                        <div class="mh-200px oy-a">
+                                            <table class="table table-bordered table-hover" data-table="dateTable">
+                                            </table>
+                                        </div>
+                                        <ul class="list-group Details mt-5px" id="dateHideShowDetailsUL">
+                                            <li class="list-group-item hideShowDetails expand_more">
+                                                <h5 class="list-group-item-heading">Vehicle
+                                                    <span class="badge bg-f3f1ed">
+                                                        <i class="material-icons">expand_less</i>
+                                                    </span>
+                                                </h5>
+                                            </li>
+                                            <li class="list-group-item p-0px">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item b-n bt br-0px">Number<span
+                                                            class="badge badge-info" id="VehicalDate"></span></li>
+                                                    <li class="list-group-item  b-n bt">Owner<span
+                                                            class="badge badge-info  b-n bt"
+                                                            id="VehicleOwnerDate"></span>
+                                                    </li>
+                                                    <li class="list-group-item  b-n bt">Mobile<span
+                                                            class="badge badge-info  b-n bt"
+                                                            id="VehicleOwnerMobNoDate"></span>
+                                                    </li>
+                                                    <li class="list-group-item  b-n bt">Driver
+                                                        Mobile<span class="badge badge-info"
+                                                            id="DriverMobileNoDate"></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <ul class="list-group Details mt-5px" id="dateInvoiceDetailsDiv">
+                                            <li class="list-group-item">
+                                                <h5 class="list-group-item-heading">Invoice</h5>
+                                            </li>
+                                            <li class="list-group-item p-0px">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item b-n bt br-0px">Invoice No<span
+                                                            class="badge badge-info" id="dateInvoiceNo"></span></li>
+                                                    <li class="list-group-item  b-n bt">Validity<span
+                                                            class="badge badge-info  b-n bt"
+                                                            id="dateValidityFrom"></span>
+                                                    </li>
+                                                    <li class="list-group-item  b-n bt">Source<span
+                                                            class="badge badge-info b-n bt" id="datePlotName"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Destination<span
+                                                            class="badge badge-info b-n bt" id="datedestination"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Distance<span
+                                                            class="badge badge-info" id="dateDistance"></span>
+                                                    </li>
+                                                    <li class="list-group-item  b-n bt">Material<span
+                                                            class="badge badge-info" id="dateMaterial"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Quantity<span
+                                                            class="badge badge-info" id="dateQuantity"></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-pane" [ngClass]="(activeTab === 'vehicleTab') ? 'active': 'fade'">
+                                        <div class="input-group mt-5px" id="divCompanies">
+                                            <span class="input-group-addon" title="Vehicle Number">Company</span>
+                                            <select class="form-control">
+
+                                            </select>
+                                        </div>
+                                        <div class="input-group" id="Div4" data-panel="3">
+                                            <div class="input-group  mt-5px mb-5px">
+                                                <label class="radio-inline">
+                                                    <input type="radio" data-entry="optradio" data-id="0"
+                                                        checked="checked" name="optradio" />All</label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" data-entry="optradio" data-id="1"
+                                                        name="optradio" />Valid</label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" data-entry="optradio" data-id="2"
+                                                        name="optradio" />Invalid</label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" data-entry="optradio" data-id="3"
+                                                        name="optradio" />Expired</label>
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon" title="Vehicle Number">
+                                                    <i class="material-icons">directions_car</i></span>
+                                                <input type="text" data-entry="vehicle" id="vehicleNo"
+                                                    title="Vehicle Number"
+                                                    class="vehicle validate-alphanumeric form-control" maxlength="10"
+                                                    placeholder="MH12AB1234" />
+                                                <span class="input-group-addon" title="Date">
+                                                    <i class="material-icons">date_range</i></span>
+                                                <input type="text" data-entry="date" title="Date" id="vehicleDate"
+                                                    class="validate-number form-control" placeholder="dd/mm/yyyy" />
+                                                <span class="input-group-addon cp" title="Search" data-button="search"
+                                                    id="BTNvehicleSearch">
+                                                    <i class="material-icons bold">search</i></span>
+                                                <span class="input-group-addon cp" title="Download"
+                                                    data-button="download" id="BTNvehicleDownload">
+                                                    <i class="material-icons bold">get_app</i></span>
+                                                <span class="input-group-addon cp" title="Clear" data-button="clear"
+                                                    id="BTNvehicleClear">
+                                                    <i class="material-icons bold">close</i></span>
+                                            </div>
+                                        </div>
+                                        <table class="table table-bordered table-hover" data-table="vehicleTable">
+                                        </table>
+                                        <div id="vehiclePageNo" class="PageNo">
+                                        </div>
+                                        <ul class="list-group Details mt-5px" id="vehicleHideShowDetailsUL">
+                                            <li class="list-group-item hideShowDetails expand_more">
+                                                <h5 class="list-group-item-heading">Vehicle
+                                                    <span class="badge bg-f3f1ed">
+                                                        <i class="material-icons">expand_more</i></span>
+                                                </h5>
+                                            </li>
+                                            <li class="list-group-item p-0px">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item b-n bt br-0px">Number<span
+                                                            class="badge badge-info" id="vehicleVehiceNo"></span></li>
+                                                    <li class="list-group-item  b-n bt">Owner<span
+                                                            class="badge badge-info" id="vehicleVehicleOwner"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Mobile<span
+                                                            class="badge badge-info"
+                                                            id="vehicleVehicleOwnerMobNo"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Driver
+                                                        Mobile<span class="badge badge-info"
+                                                            id="vehicleDriverMobNo"></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <ul class="list-group Details mt-5px" id="VehicleInvoiceDetailsDiv">
+                                            <li class="list-group-item">
+                                                <h5 class="list-group-item-heading">Invoice</h5>
+                                            </li>
+                                            <li class="list-group-item p-0px">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item b-n bt br-0px">Invoice No<span
+                                                            class="badge badge-info" id="invoiceInvoiceNo"></span></li>
+                                                    <li class="list-group-item b-n bt">Validity<span
+                                                            class="badge badge-info" id="invoiceValidityFrom"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Source<span
+                                                            class="badge badge-info" id="invoicePlotName"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Destination<span
+                                                            class="badge badge-info" id="invoicedestination"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Distance<span
+                                                            class="badge badge-info" id="invoiceDistance"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Material<span
+                                                            class="badge badge-info" id="invoiceMaterial"></span>
+                                                    </li>
+                                                    <li class="list-group-item b-n bt">Quantity<span
+                                                            class="badge badge-info" id="invoiceQuantity"></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-group Details" id="OnwerSearch">
+                            <li class="list-group-item">
+                                <h5 class="list-group-item-heading">Ownerwise Details
+                                </h5>
+                            </li>
+                            <li class="list-group-item p-4px">
+                                <div id="vehicleTabOwner" class="tab-pane">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Owner Name<span class="badge badge-info"
+                                                id="vehicleVehicleOwnerOwner"></span>
+               kj                         </li>
+                                        <li class="list-group-item">Mobile<span class="badge badge-info"
+                                                id="vehicleVehicleOwnerMobNoOwner"></span>
+                                        </li>
+                                    </ul>
+                                    <div class="input-group mt-5px" id="divCompaniesOwner">
+                                        <span class="input-group-addon" title="Vehicle Number">Company</span>
+                                        <select class="form-control"></select>
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="input-group  mt-5px mb-5px">
+                                            <label class="radio-inline">
+                                                <input type="radio" data-entry="optradio" data-id="0" checked="checked"
+                                                    name="optradioOwner" />All</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" data-entry="optradio" data-id="1"
+                                                    name="optradioOwner" />Valid</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" data-entry="optradio" data-id="2"
+                                                    name="optradioOwner" />Invalid</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" data-entry="optradio" data-id="3"
+                                                    name="optradioOwner" />Expired</label>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon" title="Vehicle Number">
+                                                <i class="material-icons">directions_car</i></span>
+                                            <input type="text" data-entry="vehicle" id="vehicleNoOwner"
+                                                title="Vehicle Number"
+                                                class="vehicle validate-alphanumeric form-control" maxlength="10"
+                                                placeholder="MH12AB1234" />
+                                            <span class="input-group-addon" title="Date">
+                                                <i class="material-icons">date_range</i></span>
+                                            <input type="text" data-entry="date" title="Date" id="vehicleDateOwner"
+                                                class="validate-number form-control" placeholder="dd/mm/yyyy" />
+                                            <span class="input-group-addon cp" title="Search" data-button="search"
+                                                id="BTNvehicleSearchOwner">
+                                                <i class="material-icons bold">search</i></span>
+                                            <span class="input-group-addon cp" title="Clear" data-button="clear"
+                                                id="BTNvehicleClearOwner">
+                                                <i class="material-icons bold">close</i></span>
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered table-hover" data-table="vehicleTableOwner">
+                                    </table>
+                                    <div id="vehiclePageNoOwner" class="PageNo">
+                                    </div>
+                                    <!-- <ul class="list-group Details mt-5px" id="vehicleHideShowDetailsULOwner">
+                                        <li class="list-group-item hideShowDetails expand_more">
+                                            <h5 class="list-group-item-heading">Vehicle
+                                                <span class="badge bg-f3f1ed">
+                                                    <i class="material-icons">expand_more</i></span>
+                                            </h5>
+                                    </li>
+                                        <li class="list-group-item p-0px">
+                                            <ul class="list-group">
+                                                <li class="list-group-item b-n bt br-0px">Number<span
+                                                        class="badge badge-info" id="vehicleVehiceNoOwner"></span></li>
+                                                                                                  <li class="list-group-item  b-n bt">
+                                                    Owner<span
+                                                        class="badge badge-info" id="vehicleVehicleOwnerOwner"></span>
+                                                </li>
+                                                <li class="list-group-item b-n bt">
+                                                    Mobile<span
+                                                        class="badge badge-info" id="vehicleVehicleOwnerMobNoOwner"></span>
+                                                </li>
+                                                <li class="list-group-item b-n bt">Driver
+                                                    Mobile<span class="badge badge-info"
+                                                        id="vehicleDriverMobNoOwner"></span>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul> -->
+                                    <!-- <ul class="list-group Details mt-5px" id="VehicleInvoiceDetailsDivOwner">
+                                        <li class="list-group-item">
+                                            <h5 classbm="list-group-item-heading">Invoice</h5>
+                                        </li>
+                                        <li class="list-group-item p-0px">
+                                            <ul class="list-group">
+                                                <li class="list-group-item b-n bt br-0px">Invoice No<span
+                                                        class="badge badge-info" id="invoiceInvoiceNoOwner"></span></li>
+                                                <li class="list-group-item b-n bt">Validity<span
+                                                        class="badge badge-info" id="invoiceValidityFromOwner"></span>
+                                                </li>
+                                                <li class="list-group-item b-n bt">Source<span class="badge badge-info"
+                                                        id="invoicePlotNameOwner"></span>
+                                                </li>
+                                                <li class="list-group-item b-n bt">Destination<span
+                                                        class="badge badge-info" id="invoicedestinationOwner"></span>
+                                                </li>
+                                                <li class="list-group-item b-n bt">Distance<span
+                                                        class="badge badge-info" id="invoiceDistanceOwner"></span>
+                                                </li>
+                                                <li class="list-group-item b-n bt">Material<span
+                                                        class="badge badge-info" id="invoiceMaterialOwner"></span>
+                                                </li>
+                                                <li class="list-group-item b-n bt">Quantity<span
+                                                        class="badge badge-info" id="invoiceQuantityOwner"></span>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul> -->
+                                </div>
+                            </li>
+                            <li>
+                                <input type="button" id="btnBackOwner" value="Back" class="btn btn-xs btn-default" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <ul class="list-group p-abs" id="operations">
+                            <li class="list-group-item disabledOperation b-n bt br-0px cna" id="btnPlay">Play
+                                <span class="badge">
+                                    <i class="material-icons bold">play_circle_filled</i></span>
+                            </li>
+                            <li class="list-group-item disabledOperation b-n bt bt_black cna" id="btnPause">Pause
+                                <span class="badge">
+                                    <i class="material-icons bold">pause_circle_filled</i></span>
+                            </li>
+                            <li class="list-group-item disabledOperation b-n bt bt_black cna" id="btnReplay">Replay
+                                <span class="badge">
+                                    <i class="material-icons bold">replay</i></span>
+                            </li>
+                        </ul>
+
+                        <div id="map_canvas">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row mt-5px" id="controlRow">
+                    <div class="col-sm-12 mb-5px">
+                        <input type="button" class="btn btn-xs btn-default" id="btnInvoiceList" data-toggle="modal"
+                            data-target="#InvoiceListModal" value="Invoice" />
+                        <input type="button" class="btn btn-xs btn-default" id="btnStoppagePointList"
+                            data-toggle="modal" data-target="#StoppagePointListModal" value="Stoppage" />
+
+                        <label class="checkbox-inline" style="max-width: 225px; padding-left: 0px;">
+                            <span class="input-group" id="TravelledDistanceInvoice">
+                                <span class="input-group-addon">Travelled Dist.</span>
+                                <span class="form-control"></span>
+                            </span>
+                        </label>
+                        <label class="checkbox-inline disabled">
+                            <input type="checkbox" id="chkDistrictGeoFence" disabled />
+                            District
+                        </label>
+                        <label class="checkbox-inline disabled">
+                            <input type="checkbox" id="chkTalukaGeoFence" disabled />
+                            Taluka
+                        </label>
+                        <label class="checkbox-inline disabled">
+                            <input type="checkbox" id="chkPlotGeoFence" disabled />
+                            <img src="images/geoFence1.png" alt="Geo Fence" title="Geo Fence" id="geoFence" />
+                            Plot
+                        </label>
+                        <label class="checkbox-inline disabled">
+                            <input type="checkbox" id="chkStoppagePoints" disabled />
+                            <img src="images/stoppagePoint.png" alt="Stoppage Point"
+                                title="Stoppage Point. # - Indicates number" id="stoppagePoint" />
+                            Stoppage
+                        </label>
+                        <label class="checkbox-inline disabled ">
+                            <input type="checkbox" id="chkGoogleMapRoute" disabled />
+                            <img src="images/location.png" alt="Stoppage Point" title="google map route"
+                                id="GoogleMapRoute" />
+                            Google map route
+                        </label>
+
+                    </div>
+
+                    <div class="col-sm-4">
+                        Since Last Invoice Date<strong>
+                            <span id="SinceLastInvoiceDate"></span>
+                        </strong>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        Since Last Invoice Travelled Distance<strong>
+                            <span id="SinceLastInvoiceTravelledDist"></span>
+                        </strong>
+                    </div>
+                    <div class="col-sm-4 text-right pr-22">
+                        Travelled Dist.
+                        <span id="TodaysTravelledDistance"></span>
+                    </div>
+                </div>--%>
+                <div class="col-sm-6 mb-5px">
+                    <div class="input-group" id="SinceLastInvoiceDate">
+                        <span class="input-group-addon">Last invoice end date</span>
+                        <span class="form-control"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6 mb-5px">
+                    <div class="input-group" id="SinceLastInvoiceTravelledHours">
+                        <span class="input-group-addon">Last invoice travelled days</span>
+                        <span class="form-control"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="input-group" id="SinceLastInvoiceTravelledDist">
+                        <span class="input-group-addon">Last invoice travelled dist.</span>
+                        <span class="form-control"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="input-group" id="TodaysTravelledDistance">
+                        <span class="input-group-addon">Travelled dist.</span>
+                        <select class="form-control"></select>
+                    </div>
+                </div>
+                <div class="col-sm-3 col1">
+                    <ul class="list-group Details mt-5px">
+                        <li class="list-group-item">
+                            <h5 class="list-group-item-heading">Active
+                            </h5>
+                        </li>
+                        <li class="list-group-item p-0px">
+                            <ul class="list-group">
+                                <li class="list-group-item b-n br-0px">Status<span class="badge badge-error"
+                                        id="status"></span></li>
+                                <li class="list-group-item b-n bt">Speed
+                                    (Km/h)<span class="badge badge-info" id="cSpeed"></span>
+                                </li>
+                                <li class="list-group-item b-n bt">Date
+                                    & Time<span class="badge badge-info" id="DeviceDatetime"></span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <%--<div class="col-sm-2 col2 mw-114px">--%>
+                <div class="col-sm-2 col2">
+                    <ul class="list-group Details mt-5px">
+                        <li class="list-group-item">
+                            <h5 class="list-group-item-heading">Line</h5>
+                        </li>
+                        <li class="list-group-item p-0px">
+                            <ul class="list-group" id="Div3">
+                                <li class="list-group-item b-n br-0px mh-25px">Valid
+                                    <span class="badge">
+                                        <i class="material-icons bold c-468847">trending_flat</i></span>
+                                </li>
+                                <li class="list-group-item  b-n bt mh-25px">InValid
+                                    <span class="badge">
+                                        <i class="material-icons bold c-ED4345">trending_flat</i></span>
+                                </li>
+                                <li class="list-group-item b-n bt mh-25px">Expired
+                                    <span class="badge">
+                                        <i class="material-icons bold c-FBB917">trending_flat</i></span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-2 col3 mw-114px">
+                    <ul class="list-group Details mt-5px">
+                        <li class="list-group-item">
+                            <h5 class="list-group-item-heading">Control
+                            </h5>
+                        </li>
+                        <li class="list-group-item p-0px">
+                            <ul class="list-group" id="operations">
+                                <li class="list-group-item disabledOperation b-n bt br-0px cna mh-25px" id="btnPlay">
+                                    Play
+                                    <span class="badge">
+                                        <i class="material-icons bold">play_circle_filled</i></span>
+                                </li>
+                                <li class="list-group-item disabledOperation b-n bt cna mh-25px" id="btnPause">
+                                    Pause
+                                    <span class="badge">
+                                        <i class="material-icons bold">pause_circle_filled</i></span>
+                                </li>
+                                <li class="list-group-item disabledOperation b-n bt cna mh-25px" id="btnReplay">
+                                    Replay
+
+                                    <span class="badge">
+                                        <i class="material-icons bold">replay</i></span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>--%>
+                <div class="col-sm-2 col3 mw-114px">
+                    <div class="col-sm-2 col3">
+                        <ul class="list-group Details mt-5px">
+                            <li class="list-group-item">
+                                <h5 class="list-group-item-heading">Marker
+                                </h5>
+                            </li>
+                            <li class="list-group-item p-0px">
+                                <ul class="list-group" id="markerOperation">
+                                    <li class="list-group-item disabledOperation b-n br-0px cna mh-25px" id="btnCenter">
+                                        Center
+                                        <span class="badge">
+                                            <i class="material-icons">center_focus_strong</i></span>
+                                    </li>
+                                    <li class="list-group-item disabledOperation b-n bt cna mh-25px" id="btnFit">Fit
+                                        <span class="badge">
+                                            <i class="material-icons">aspect_ratio</i></span>
+                                    </li>
+                                    <li class="list-group-item disabledOperation b-n bt cna mh-25px" id="btnMove">Move
+                                        <span class="badge">
+                                            <i class="material-icons">open_with</i></span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <div class="col-sm-7 col4">
+                                <ul class="list-group Details mt-5px">
+                                    <li class="list-group-item">
+                                        <h5 class="list-group-item-heading">Date & Time
+                                            <span class="badge badge-info" id="AValidityCurrent"></span>
+                                        </h5>
+                                    </li>
+                                    <li class="list-group-item p-4px">
+                                        <div id="slidecontainer">
+                                            <progress id="progressBar" class="db wf zi-m1" value="0" max="1"></progress>
+                                            <input type="range" id="distanceRange" class="slider db wf mt-m15 zi-0"
+                                                disabled="disabled" value="0" step="1" min="0" max="0" />
+                                            <input type="range" id="distanceRange1" class="slider db wf mt-m15 zi-1"
+                                                value="0" step="1" min="0" max="0" />
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">Start
+                                        <span class="badge badge-info" id="AValidityFrom"></span>
+                                    </li>
+                                    <li class="list-group-item">End
+                                        <span class="badge badge-info" id="AValidityTo"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-5 col5">
+                                <ul class="list-group Details mt-5px">
+                                    <li class="list-group-item">
+                                        <h5 class="list-group-item-heading">Speed
+                                            <span class="badge badge-info" id="cASpeed"></span>
+                                        </h5>
+                                    </li>
+                                    <li class="list-group-item sliderPadding">
+                                        <input type="range" min="10" max="90" value="50" class="slider"
+                                            id="speedControl" />
+                                        <div class="d-flex">
+                                            <div class="w-100 text-center">
+                                                <i class="material-icons">arrow_drop_up</i>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <img alt="Shaurya Technosoft Pvt. Ltd." class="shauryaLogo" src="images/logo.png" />
+                                <span class="sms" title="SMS" id="SMSModalPopUp">SMS</span>
+                                <span class="badge logout" title="Logout">
+                                    <i class="material-icons">power_settings_new</i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+
+</div>

@@ -49,7 +49,7 @@ surveyEditMode: boolean;
   constructor(private quarryRegisterAPiService: QuarryRegisterAPiService) { }
 
   searchQuarryRegisters() {
-    this.quarryRegisterAPiService.getQuarryRegisters(this.quarrySearchCriteria).subscribe(res => {this.quarryRegisters = res.responseData1});
+   this.quarryRegisterAPiService.getQuarryRegisters(this.quarrySearchCriteria).subscribe(res => {this.quarryRegisters = res.responseData1});
   }
 
   onDistrictChange(districtId: number): void{

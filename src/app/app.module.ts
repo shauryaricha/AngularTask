@@ -11,6 +11,7 @@ import { UserComponent } from './user/user.component';
 import { UserFormComponent } from './user/user-form/user-form.component';
 import { QuarryRegisterComponent } from './quarry-register/quarry-register.component';
 import { VehicleTrackingComponent } from './components/vehicle-tracking/vehicle-tracking.component';
+import { VechicleTrackingService } from './service/vechicleTracking.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,9 @@ import { VehicleTrackingComponent } from './components/vehicle-tracking/vehicle-
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    VechicleTrackingService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

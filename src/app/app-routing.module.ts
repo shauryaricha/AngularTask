@@ -37,6 +37,7 @@ const routes: Routes = [
   {
     path: 'vehicle-tracking', component: VehicleTrackingComponent
   },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

@@ -10,7 +10,7 @@
             <button type="button" class="close" (click)="close()">&times;</button> Email does not exist, Please register.
         </div>
         <h2 class="text-center"><u>USER LOGIN</u></h2>
-        <form #login="ngForm" (ngSubmit)="onLogin(login.value)" autocomplete="off">
+        <form #login="ngForm" (ngg)="onLogin(login.value)" autocomplete="off">
             <div class="form-group">
                 <label for="email">Email address</label>
                 <input type="email" #email="ngModel" class="form-control" name="email" placeholder="Enter email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" ngModel required>
@@ -33,3 +33,4 @@
     </div>
     <div class="col-1 col-md-1"></div>
 </div>
+
